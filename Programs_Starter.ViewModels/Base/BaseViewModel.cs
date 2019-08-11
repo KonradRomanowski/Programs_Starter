@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Programs_Starter.ViewModels.Helpers;
+using System;
 using System.ComponentModel;
 
 namespace Programs_Starter.ViewModels.Base
@@ -16,6 +17,11 @@ namespace Programs_Starter.ViewModels.Base
             handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        protected BaseViewModel()
+        {
+            SimpleCommandManager.AssignOnPropertyChanged(ref this.PropertyChanged);
         }
 
     }

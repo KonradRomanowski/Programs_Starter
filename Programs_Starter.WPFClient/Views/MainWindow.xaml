@@ -9,7 +9,37 @@
 		WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize"
         Topmost="True">
-	<Grid>
-		<TextBlock Text="{Binding test}"></TextBlock>
-    </Grid>
+
+	<Window.Resources>
+		<BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter" />
+	</Window.Resources>
+
+	<Grid Margin="10,10">
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="*"/>
+		</Grid.ColumnDefinitions>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="6*"/>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
+
+		<TextBlock Name="MessageTextBlock" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" DataContext="{Binding MainMessage}"
+				   Text="{Binding Text, FallbackValue=MainMessage}" FontSize="14" FontStyle="Normal" 
+				   Foreground="{Binding Color, FallbackValue=Black}" HorizontalAlignment="Center" VerticalAlignment="Center"
+				   Visibility="{Binding Visibility, Converter={StaticResource booleanToVisibilityConverter}}" />
+
+		<Button Name="CancelButton" Grid.Column="3" Grid.Row="0" DataContext="{Binding CancelButton}"
+				Content="{Binding Text, FallbackValue=Cancel}" Background="{Binding BackgroundColor, FallbackValue=White}"
+				FontSize="14" FontStyle="Normal" HorizontalAlignment="Center" VerticalAlignment="Center"
+				Foreground="{Binding ForegroundColor, FallbackValue=Black}" Command="{Binding Command}"
+				Visibility="{Binding Visibility, Converter={StaticResource booleanToVisibilityConverter}}"/>
+		
+		
+
+	</Grid>
 </Window>
