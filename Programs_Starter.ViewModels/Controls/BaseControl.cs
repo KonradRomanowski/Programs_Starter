@@ -25,11 +25,11 @@ namespace Programs_Starter.ViewModels.Controls
             set { backgroundColor = value; OnPropertyChanged(nameof(BackgroundColor)); }
         }
 
-        private bool visibility;
-        public bool Visibility
+        private bool isVisible;
+        public bool IsVisible
         {
-            get { return visibility; }
-            set { visibility = value; OnPropertyChanged(nameof(Visibility)); }
+            get { return isVisible; }
+            set { isVisible = value; OnPropertyChanged(nameof(IsVisible)); }
         }
 
         private string text;

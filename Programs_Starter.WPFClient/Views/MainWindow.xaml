@@ -31,13 +31,13 @@
 		<TextBlock Name="MessageTextBlock" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" DataContext="{Binding MainMessage}"
 				   Text="{Binding Text, FallbackValue=MainMessage}" FontSize="14" FontStyle="Normal" 
 				   Foreground="{Binding ForegroundColor, FallbackValue=Black}" HorizontalAlignment="Center" VerticalAlignment="Center"
-				   Visibility="{Binding Visibility, Converter={StaticResource booleanToVisibilityConverter}}" />
+				   Visibility="{Binding IsVisible, Converter={StaticResource booleanToVisibilityConverter}}" />
 
 		<Button Name="CancelButton" Grid.Column="3" Grid.Row="0" DataContext="{Binding CancelButton}"
 				Content="{Binding Text, FallbackValue=Cancel}" Background="{Binding BackgroundColor, FallbackValue=White}"
 				FontSize="14" FontStyle="Normal" HorizontalAlignment="Center" VerticalAlignment="Center"
 				Foreground="{Binding ForegroundColor, FallbackValue=Black}" Command="{Binding Command}"
-				Visibility="{Binding Visibility, Converter={StaticResource booleanToVisibilityConverter}}"/>
+				Visibility="{Binding IsVisible, Converter={StaticResource booleanToVisibilityConverter}}"/>
 		
 		
 

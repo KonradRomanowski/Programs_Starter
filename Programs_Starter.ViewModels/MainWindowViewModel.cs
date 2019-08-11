@@ -23,20 +23,20 @@ namespace Programs_Starter.ViewModels
             MainMessage.BackgroundColor = Color.Gray;
             MainMessage.ForegroundColor = Color.Red;
             MainMessage.Text = "Test tekstu udany!";
-            MainMessage.Visibility = true;
+            MainMessage.IsVisible = true;
 
             CancelButton = new ButtonControl();
             CancelButton.BackgroundColor = Color.Orange;
             CancelButton.ForegroundColor = Color.Green;
             CancelButton.Text = "Przycisk Cancel";
-            CancelButton.Visibility = true;
+            CancelButton.IsVisible = true;
             CancelButton.Command = new RelayCommand(CancelButtonCommand);
         }
 
         private void CancelButtonCommand()
         {            
             MainMessage.Text = "Test przycisku Cancel udany!";
-            CancelButton.Visibility = false;
+            CancelButton.IsVisible = false;
             MainMessage.ForegroundColor = Color.Red;
         }
     }
