@@ -13,14 +13,8 @@ namespace Programs_Starter.ViewModels
     /// </summary>
     public class MainWindowViewModel : BaseViewModel
     {
-        private TextBlockControl mainMessage;
-        public TextBlockControl MainMessage
-        {
-            get { return mainMessage; }
-            set { mainMessage = value; OnPropertyChanged(nameof(MainMessage)); }
-        }
-
-
+        public TextBlockControl MainMessage { get; set; }
+        
         public ButtonControl CancelButton { get; set; }
 
         public MainWindowViewModel()
@@ -32,7 +26,7 @@ namespace Programs_Starter.ViewModels
             MainMessage.Visibility = true;
 
             CancelButton = new ButtonControl();
-            CancelButton.BackgroundColor = Color.Salmon;
+            CancelButton.BackgroundColor = Color.Orange;
             CancelButton.ForegroundColor = Color.Green;
             CancelButton.Text = "Przycisk Cancel";
             CancelButton.Visibility = true;
@@ -42,6 +36,8 @@ namespace Programs_Starter.ViewModels
         private void CancelButtonCommand()
         {            
             MainMessage.Text = "Test przycisku Cancel udany!";
+            CancelButton.Visibility = false;
+            MainMessage.ForegroundColor = Color.Red;
         }
     }
 }

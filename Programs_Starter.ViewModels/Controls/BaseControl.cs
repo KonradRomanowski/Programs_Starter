@@ -11,9 +11,26 @@ namespace Programs_Starter.ViewModels.Controls
     /// </summary>
     public abstract class BaseControl : BaseViewModel
     {
-        public Color ForegroundColor { get; set; }
-        public Color BackgroundColor { get; set; }
-        public bool Visibility { get; set; }
+        private Color foregroundColor;
+        public Color ForegroundColor
+        {
+            get { return foregroundColor; }
+            set { foregroundColor = value; OnPropertyChanged(nameof(ForegroundColor)); }
+        }
+
+        private Color backgroundColor;
+        public Color BackgroundColor
+        {
+            get { return backgroundColor; }
+            set { backgroundColor = value; OnPropertyChanged(nameof(BackgroundColor)); }
+        }
+
+        private bool visibility;
+        public bool Visibility
+        {
+            get { return visibility; }
+            set { visibility = value; OnPropertyChanged(nameof(Visibility)); }
+        }
 
         private string text;
         public string Text
