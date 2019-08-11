@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Programs_Starter.WPFClient"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Programs_Starter.Models", "Programs_Starter.Models\Programs_Starter.Models.csproj", "{1EBA464F-6F83-4BB9-891B-DF9D5EFB99C5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Programs_Starter.ViewModels", "Programs_Starter.ViewModels\Programs_Starter.ViewModels.csproj", "{F300728E-59A6-4F7E-BA91-6EBDD1A2C735}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{1EBA464F-6F83-4BB9-891B-DF9D5EFB99C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1EBA464F-6F83-4BB9-891B-DF9D5EFB99C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1EBA464F-6F83-4BB9-891B-DF9D5EFB99C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F300728E-59A6-4F7E-BA91-6EBDD1A2C735}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F300728E-59A6-4F7E-BA91-6EBDD1A2C735}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F300728E-59A6-4F7E-BA91-6EBDD1A2C735}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F300728E-59A6-4F7E-BA91-6EBDD1A2C735}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
