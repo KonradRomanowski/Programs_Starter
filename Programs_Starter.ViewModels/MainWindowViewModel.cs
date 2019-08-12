@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Programs_Starter.ViewModels
 {
@@ -13,9 +15,9 @@ namespace Programs_Starter.ViewModels
     /// </summary>
     public class MainWindowViewModel : BaseViewModel
     {
-        public TextBlockControl MainMessage { get; set; }
-        
+        public TextBlockControl MainMessage { get; set; }        
         public ButtonControl CancelButton { get; set; }
+        public ProgressBarControl StatusProgressBar { get; set; }
 
         public MainWindowViewModel()
         {
@@ -31,6 +33,11 @@ namespace Programs_Starter.ViewModels
             CancelButton.Text = "Przycisk Cancel";
             CancelButton.IsVisible = true;
             CancelButton.Command = new RelayCommand(CancelButtonCommand);
+
+            StatusProgressBar = new ProgressBarControl();
+            StatusProgressBar.IsVisible = true;
+            StatusProgressBar.Value = 0;
+            StatusProgressBar.Text = StatusProgressBar.Value.ToString();
         }
 
         private void CancelButtonCommand()
@@ -38,6 +45,9 @@ namespace Programs_Starter.ViewModels
             MainMessage.Text = "Test przycisku Cancel udany!";
             CancelButton.IsVisible = false;
             MainMessage.ForegroundColor = Color.Red;
+
+            StatusProgressBar.Value = 75;
+            StatusProgressBar.Text = StatusProgressBar.Value.ToString();
         }
     }
 }
