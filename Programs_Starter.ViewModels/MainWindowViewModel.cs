@@ -5,6 +5,7 @@ using Programs_Starter.ViewModels.Windows;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -17,14 +18,18 @@ namespace Programs_Starter.ViewModels
     public class MainWindowViewModel : BaseViewModel
     {
         public MainWindowSettings MainWindowSettings { get; set; }
-        public TextBlockControl MainMessage { get; set; }        
+        public TextBlockControl MainMessage { get; set; }
+        public TextBlockControl AboutText { get; set; }
         public ButtonControl CancelButton { get; set; }
+        public ButtonControl ThankYouButton { get; set; }
+        public ButtonControl StartNowButton { get; set; }
+        public ButtonControl DontStartButton { get; set; }
         public ProgressBarControl StatusProgressBar { get; set; }
 
         public MainWindowViewModel()
         {
             MainWindowSettings = new MainWindowSettings();
-            MainWindowSettings.Height = 200;
+            MainWindowSettings.Height = 160;
 
             MainMessage = new TextBlockControl();
             MainMessage.BackgroundColor = ControlsColors.ORANGE;
@@ -44,6 +49,10 @@ namespace Programs_Starter.ViewModels
             StatusProgressBar.Value = 0;
             StatusProgressBar.ForegroundColor = ControlsColors.BLACK;
             StatusProgressBar.Text = StatusProgressBar.Value.ToString();
+
+            AboutText = new TextBlockControl();
+            AboutText.IsVisible = true;
+            AboutText.Text = "v. 0.0.0.1  KR @ 2019";
         }
 
         private void CancelButtonCommand()
