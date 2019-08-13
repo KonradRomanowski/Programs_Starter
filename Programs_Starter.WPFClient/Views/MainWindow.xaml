@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Programs_Starter.WPFClient.Views"
+        xmlns:converters="clr-namespace:Programs_Starter.WPFClient.Converters"
         mc:Ignorable="d"
         Title="Programs Starter" Height="{Binding MainWindowSettings.Height, Mode=TwoWay}" Width="500"
 		WindowStartupLocation="CenterScreen"
@@ -12,6 +13,7 @@
 
 	<Window.Resources>
 		<BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter" />
+        <converters:StringColorToSolidBrushColorConverter x:Key="colorConverter" />
 	</Window.Resources>
 
 	<Grid Name="UpperGrid" Margin="10,10">
@@ -31,18 +33,18 @@
                      DataContext="{Binding StatusProgressBar}" Margin="10" Value="{Binding Value, FallbackValue=0}"
                      Visibility="{Binding IsVisible, Converter={StaticResource booleanToVisibilityConverter}}" />
         <TextBlock Name="ProgressBarText" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" DataContext="{Binding StatusProgressBar}"
-                   HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{Binding ForegroundColor, FallbackValue=Black}"
+                   HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{Binding ForegroundColor, Converter={StaticResource colorConverter}, FallbackValue=Black}"
                    Text="{Binding Text}" Visibility="{Binding IsVisible, Converter={StaticResource booleanToVisibilityConverter}}"/>
 
         <Button Name="CancelButton" Grid.Column="3" Grid.Row="0" DataContext="{Binding CancelButton}"
-				Content="{Binding Text, FallbackValue=Cancel}" Background="{Binding BackgroundColor, FallbackValue=White}"
+				Content="{Binding Text, FallbackValue=Cancel}" Background="{Binding BackgroundColor, Converter={StaticResource colorConverter}, FallbackValue=DodgerBlue}"
 				FontSize="14" FontStyle="Normal" HorizontalAlignment="Center" VerticalAlignment="Center"
-				Foreground="{Binding ForegroundColor, FallbackValue=Black}" Command="{Binding Command}"
+				Foreground="{Binding ForegroundColor, Converter={StaticResource colorConverter}, FallbackValue=Black}" Command="{Binding Command}"
 				Visibility="{Binding IsVisible, Converter={StaticResource booleanToVisibilityConverter}}"/>
 
         <TextBlock Name="MessageTextBlock" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" DataContext="{Binding MainMessage}"
 				   Text="{Binding Text, FallbackValue=MainMessage}" FontSize="14" FontStyle="Normal" 
-				   Foreground="{Binding ForegroundColor, FallbackValue=Black}" HorizontalAlignment="Center" VerticalAlignment="Center"
+				   Foreground="{Binding ForegroundColor, Converter={StaticResource colorConverter}, FallbackValue=Black}" HorizontalAlignment="Center" VerticalAlignment="Center"
 				   Visibility="{Binding IsVisible, Converter={StaticResource booleanToVisibilityConverter}}" />
 
     </Grid>

@@ -7,15 +7,15 @@ namespace Programs_Starter.ViewModels.Base
     /// </summary>
     public abstract class BaseControl : BaseNotificator
     {
-        private Color foregroundColor;
-        public Color ForegroundColor
+        private string foregroundColor;
+        public string ForegroundColor
         {
             get { return foregroundColor; }
             set { foregroundColor = value; OnPropertyChanged(nameof(ForegroundColor)); }
         }
 
-        private Color backgroundColor;
-        public Color BackgroundColor
+        private string backgroundColor;
+        public string BackgroundColor
         {
             get { return backgroundColor; }
             set { backgroundColor = value; OnPropertyChanged(nameof(BackgroundColor)); }

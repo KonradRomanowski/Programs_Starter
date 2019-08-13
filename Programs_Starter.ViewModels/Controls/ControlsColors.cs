@@ -10,5 +10,6 @@ namespace Programs_Starter.ViewModels.Controls
         public const string BLACK = "BLACK";
         public const string ORANGE = "ORANGE";
         public const string BLUE = "BLUE";
+        public const string WHITE = "WHITE";
     }
 }
