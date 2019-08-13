@@ -1,6 +1,7 @@
 ﻿using Programs_Starter.ViewModels.Base;
 using Programs_Starter.ViewModels.Controls;
 using Programs_Starter.ViewModels.Helpers;
+using Programs_Starter.ViewModels.Windows;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -15,12 +16,16 @@ namespace Programs_Starter.ViewModels
     /// </summary>
     public class MainWindowViewModel : BaseViewModel
     {
+        public MainWindowSettings MainWindowSettings { get; set; }
         public TextBlockControl MainMessage { get; set; }        
         public ButtonControl CancelButton { get; set; }
         public ProgressBarControl StatusProgressBar { get; set; }
 
         public MainWindowViewModel()
         {
+            MainWindowSettings = new MainWindowSettings();
+            MainWindowSettings.Height = 200;
+
             MainMessage = new TextBlockControl();
             MainMessage.BackgroundColor = Color.Gray;
             MainMessage.ForegroundColor = Color.Red;
@@ -48,6 +53,8 @@ namespace Programs_Starter.ViewModels
 
             StatusProgressBar.Value = 75;
             StatusProgressBar.Text = StatusProgressBar.Value.ToString();
+
+            MainWindowSettings.Height = 400;
         }
     }
 }

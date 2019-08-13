@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Programs_Starter.ViewModels.Controls
+namespace Programs_Starter.ViewModels.Windows
 {
-    public class TextBlockControl : BaseControl
+    public class MainWindowSettings : BaseWindowSettings
     {
     }
 }

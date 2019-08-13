@@ -1,28 +1,13 @@
-﻿using Programs_Starter.ViewModels.Helpers;
-using System;
-using System.ComponentModel;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace Programs_Starter.ViewModels.Base
 {
-    public abstract class BaseViewModel : INotifyPropertyChanged
+    /// <summary>
+    /// Base class for ViewModels
+    /// </summary>
+    public abstract class BaseViewModel : BaseNotificator
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        internal void OnPropertyChanged(string propertyName)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (propertyName == null)
-                throw new ArgumentNullException("propertyExpression");
-
-            handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        protected BaseViewModel()
-        {
-            SimpleCommandManager.AssignOnPropertyChanged(ref this.PropertyChanged);
-        }
-
     }
 }

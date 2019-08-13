@@ -1,15 +1,11 @@
-﻿using Programs_Starter.ViewModels.Base;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Text;
+﻿using System.Drawing;
 
-namespace Programs_Starter.ViewModels.Controls
+namespace Programs_Starter.ViewModels.Base
 {
     /// <summary>
     /// Class for the definition of base Control
     /// </summary>
-    public abstract class BaseControl : BaseViewModel
+    public abstract class BaseControl : BaseNotificator
     {
         private Color foregroundColor;
         public Color ForegroundColor
