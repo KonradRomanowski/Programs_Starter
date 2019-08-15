@@ -24,6 +24,8 @@ namespace Programs_Starter.ViewModels
         public ButtonControl ThankYouButton { get; set; }
         public ButtonControl StartNowButton { get; set; }
         public ButtonControl DontStartButton { get; set; }
+        public ButtonControl OptionsButton { get; set; }
+        public ButtonControl ShowProgramsListButton { get; set; }
         public ProgressBarControl StatusProgressBar { get; set; }
 
         public MainWindowViewModel()
