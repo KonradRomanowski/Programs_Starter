@@ -21,7 +21,7 @@ namespace Programs_Starter.ViewModels
     public class MainWindowViewModel : BaseViewModel
     {
         public MainWindowSettings MainWindowSettings { get; set; }
-        public ObservableCollection<ProgramToStartWrapper> ProgramsToStart { get; set; }
+        public DataGridControl<ProgramToStartWrapper> ProgramsToStart { get; set; }
         public TextBlockControl MainMessage { get; set; }
         public TextBlockControl AboutText { get; set; }
         public ButtonControl CancelButton { get; set; }
@@ -31,14 +31,7 @@ namespace Programs_Starter.ViewModels
         public ButtonControl OptionsButton { get; set; }
         public ButtonControl ShowProgramsListButton { get; set; }
         public ProgressBarControl StatusProgressBar { get; set; }
-
-        private bool isProgramsToStartGridVisible;
-        public bool IsProgramsToStartGridVisible
-        {
-            get { return isProgramsToStartGridVisible; }
-            set { isProgramsToStartGridVisible = value; OnPropertyChanged(nameof(IsProgramsToStartGridVisible)); }
-        }
-
+        
         public MainWindowViewModel()
         {
             MainWindowSettings = new MainWindowSettings();
@@ -67,12 +60,13 @@ namespace Programs_Starter.ViewModels
             AboutText.IsVisible = true;
             AboutText.Text = "v. 0.0.0.1  KR @ 2019";
 
-            IsProgramsToStartGridVisible = false;
-            ProgramsToStart = new ObservableCollection<ProgramToStartWrapper>()
+            ProgramsToStart = new DataGridControl<ProgramToStartWrapper>();
+            ProgramsToStart.IsVisible = false;
+            ProgramsToStart.DataCollection = new ObservableCollection<ProgramToStartWrapper>()
             {
-                new ProgramToStartWrapper(new ProgramToStart("test1", "D://test1")),
-                new ProgramToStartWrapper(new ProgramToStart("test2", "D://test2")),
-                new ProgramToStartWrapper(new ProgramToStart("test3", "D://test3")),
+                new ProgramToStartWrapper(new ProgramToStart("test1", "D://test1.txt")),
+                new ProgramToStartWrapper(new ProgramToStart("test2", "D://test2.txt")),
+                new ProgramToStartWrapper(new ProgramToStart("test3", "D://test3.txt")),
             };
         }
 
@@ -86,7 +80,7 @@ namespace Programs_Starter.ViewModels
             StatusProgressBar.Text = StatusProgressBar.Value.ToString();
 
             MainWindowSettings.Height = 400;
-            IsProgramsToStartGridVisible = true;
+            ProgramsToStart.IsVisible = true;
         }
     }
 }

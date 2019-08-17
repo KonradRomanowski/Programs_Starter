@@ -66,7 +66,7 @@
 				Visibility="{Binding IsVisible, Converter={StaticResource booleanToVisibilityConverter}}"/>
         </Grid>
 
-        <Grid Name="ProgramsToStartGrid" Margin="2" Visibility="{Binding IsProgramsToStartGridVisible, Converter={StaticResource booleanToVisibilityConverter}}">
+        <Grid Name="ProgramsToStartGrid" Margin="2" Visibility="{Binding ProgramsToStart.IsVisible, Converter={StaticResource booleanToVisibilityConverter}}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="3*"/>
                 <ColumnDefinition Width="*"/>
@@ -76,7 +76,7 @@
                 <RowDefinition Height="20" />
             </Grid.RowDefinitions>
 
-            <DataGrid Name="ProgramsToStartDataGrid" Grid.Column="0" Grid.Row="0" ItemsSource="{Binding ProgramsToStart}"
+            <DataGrid Name="ProgramsToStartDataGrid" Grid.Column="0" Grid.Row="0" ItemsSource="{Binding ProgramsToStart.DataCollection}"
                      Height="200" Width="300" AutoGenerateColumns="False" FrozenColumnCount="2">
                 <DataGrid.Columns>
                     <!--<DataGridTextColumn Header="Order" Binding="{Binding Order}" />-->
