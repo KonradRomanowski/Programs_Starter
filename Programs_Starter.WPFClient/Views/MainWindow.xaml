@@ -76,15 +76,21 @@
                 <RowDefinition Height="20" />
             </Grid.RowDefinitions>
 
-            <DataGrid Name="ProgramsToStartDataGrid" Grid.Column="0" Grid.Row="0" ItemsSource="{Binding ProgramsToStart.DataCollection}"
-                     Height="200" Width="300" AutoGenerateColumns="False" FrozenColumnCount="2">
+            <DataGrid Name="ProgramsToStartDataGrid" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" 
+                      ItemsSource="{Binding ProgramsToStart.DataCollection}" Height="200" Width="400" 
+                      AutoGenerateColumns="False" FrozenColumnCount="2">
                 <DataGrid.Columns>
                     <!--<DataGridTextColumn Header="Order" Binding="{Binding Order}" />-->
-                    <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
-                    <DataGridTextColumn Header="Path" Binding="{Binding Path}" />
+                    <DataGridTextColumn Header="Name" Binding="{Binding Name, Mode=OneWay}" />
+                    <DataGridTextColumn Header="Path" Binding="{Binding Path, Mode=OneWay}" />
                 </DataGrid.Columns>                
             </DataGrid>
 
+            <Button Name="SaveButton" Grid.Column="1" Grid.Row="1" DataContext="{Binding SaveButton}"
+				Content="{Binding Text, FallbackValue=Save}" Background="{Binding BackgroundColor, Converter={StaticResource colorConverter}, FallbackValue=Blue}"
+				FontSize="11" FontStyle="Normal" HorizontalAlignment="Center" VerticalAlignment="Center"
+				Foreground="{Binding ForegroundColor, Converter={StaticResource colorConverter}, FallbackValue=Black}" Command="{Binding Command}"
+				Visibility="{Binding IsVisible, Converter={StaticResource booleanToVisibilityConverter}}"/>
         </Grid>
 
         <Grid Name="BottomMenuGrid" Margin="0">

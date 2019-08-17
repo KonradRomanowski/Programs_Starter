@@ -31,7 +31,7 @@ namespace Programs_Starter.ViewModels
         public ButtonControl OptionsButton { get; set; }
         public ButtonControl ShowProgramsListButton { get; set; }
         public ProgressBarControl StatusProgressBar { get; set; }
-        
+                
         public MainWindowViewModel()
         {
             MainWindowSettings = new MainWindowSettings();
@@ -81,6 +81,6 @@ namespace Programs_Starter.ViewModels
 
             MainWindowSettings.Height = 400;
             ProgramsToStart.IsVisible = true;
-        }
+        }        
     }
 }
