@@ -12,6 +12,6 @@ namespace Programs_Starter.ViewModels.Controls
         {
             get { return _value; }
             set { _value = value; OnPropertyChanged(nameof(Value)); }
-        }
+        }        
     }
 }

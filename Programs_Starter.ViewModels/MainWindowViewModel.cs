@@ -34,27 +34,50 @@ namespace Programs_Starter.ViewModels
                 
         public MainWindowViewModel()
         {
-            MainWindowSettings = new MainWindowSettings();
-            MainWindowSettings.Height = 160;
+            InitializeControls();            
+        }        
 
-            MainMessage = new TextBlockControl();
-            MainMessage.BackgroundColor = ControlsColors.ORANGE;
-            MainMessage.ForegroundColor = ControlsColors.BLACK;
-            MainMessage.Text = "Test tekstu udany!";
-            MainMessage.IsVisible = true;
+        private void CancelButtonCommand()
+        {            
+            MainMessage.Text = "Test przycisku Cancel udany!";
+            CancelButton.IsVisible = false;
+            MainMessage.ForegroundColor = ControlsColors.RED;
 
-            CancelButton = new ButtonControl();
-            CancelButton.BackgroundColor = ControlsColors.WHITE;
-            CancelButton.ForegroundColor = ControlsColors.BLACK;
-            CancelButton.Text = "Przycisk Cancel";
-            CancelButton.IsVisible = true;
-            CancelButton.Command = new RelayCommand(CancelButtonCommand);
+            StatusProgressBar.Value = 75;
+            StatusProgressBar.Text = $"Progress: {StatusProgressBar.Value.ToString()}%";
 
-            StatusProgressBar = new ProgressBarControl();
-            StatusProgressBar.IsVisible = true;
-            StatusProgressBar.Value = 0;
-            StatusProgressBar.ForegroundColor = ControlsColors.BLACK;
-            StatusProgressBar.Text = StatusProgressBar.Value.ToString();
+            MainWindowSettings.Height = 400;
+            ProgramsToStart.IsVisible = true;
+        }
+
+        private void InitializeControls()
+        {
+            MainWindowSettings = new MainWindowSettings
+            {
+                Height = 160
+            };
+
+            MainMessage = new TextBlockControl
+            {
+                ForegroundColor = ControlsColors.BLACK,
+                Text = "Test tekstu udany!",
+                IsVisible = true
+            };
+
+            CancelButton = new ButtonControl
+            {
+                ForegroundColor = ControlsColors.BLACK,
+                Text = "Przycisk Cancel",
+                IsVisible = true,
+                Command = new RelayCommand(CancelButtonCommand)
+            };
+
+            StatusProgressBar = new ProgressBarControl
+            {
+                IsVisible = true,
+                Value = 0
+            };
+            StatusProgressBar.Text = "Waiting...";
 
             AboutText = new TextBlockControl();
             AboutText.IsVisible = true;
@@ -69,18 +92,5 @@ namespace Programs_Starter.ViewModels
                 new ProgramToStartWrapper(new ProgramToStart("test3", "D://test3.txt")),
             };
         }
-
-        private void CancelButtonCommand()
-        {            
-            MainMessage.Text = "Test przycisku Cancel udany!";
-            CancelButton.IsVisible = false;
-            MainMessage.ForegroundColor = ControlsColors.RED;
-
-            StatusProgressBar.Value = 75;
-            StatusProgressBar.Text = StatusProgressBar.Value.ToString();
-
-            MainWindowSettings.Height = 400;
-            ProgramsToStart.IsVisible = true;
-        }        
     }
 }
