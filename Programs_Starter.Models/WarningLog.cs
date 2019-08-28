@@ -6,11 +6,11 @@ using System.Text;
 
 namespace Programs_Starter.Models
 {
-    public class ErrorLog : BaseLog
+    public class WarningLog : BaseLog
     {
-        public ErrorLog(DateTime dateAndTime, string className, string log) 
-            : base(dateAndTime, LogStatus.Error, className, log)
+        public WarningLog(DateTime dateAndTime, string className, string log)
+            : base(dateAndTime, LogStatus.Warning, className, log)
         {
-        }        
+        }
     }
 }

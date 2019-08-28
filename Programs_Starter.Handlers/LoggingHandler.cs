@@ -22,13 +22,38 @@ namespace Programs_Starter.Handlers
             Logs = new List<BaseLog>();
         }
 
+        public void DoWarningLog(string logContent)
+        {
+            WarningLog log = new WarningLog(DateTime.Now, parentClassName, logContent);
+
+            StoreLog(log);
+        }
+
+        public void DoWarningLogKV(string logContent, params string[] values)
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.Append(logContent);
+
+            for (int i = 0; i < values.Length; i++)
+            {
+                if (i.IsEven())
+                    stringBuilder.Append(values[i]);
+                else
+                    stringBuilder.Append($"=<{values[i]}>");
+            }
+
+            WarningLog log = new WarningLog(DateTime.Now, parentClassName, stringBuilder.ToString());
+
+            StoreLog(log);
+        }
+
         public void DoErrorLog(string logContent)
         {
             ErrorLog log = new ErrorLog(DateTime.Now, parentClassName, logContent);
 
-            Logs.Add(log);
+            StoreLog(log);            
         }
-
+        
         public void DoErrorLogKV(string logContent, params string[] values)
         {
             StringBuilder stringBuilder = new StringBuilder();
@@ -44,6 +69,11 @@ namespace Programs_Starter.Handlers
 
             ErrorLog log = new ErrorLog(DateTime.Now, parentClassName, stringBuilder.ToString());
 
+            StoreLog(log);
+        }
+
+        private void StoreLog(BaseLog log)
+        {
             Logs.Add(log);
         }
     }

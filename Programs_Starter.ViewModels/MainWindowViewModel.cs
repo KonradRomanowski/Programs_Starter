@@ -1,4 +1,5 @@
-﻿using Programs_Starter.Models;
+﻿using Programs_Starter.MainProgram;
+using Programs_Starter.Models;
 using Programs_Starter.ViewModels.Base;
 using Programs_Starter.ViewModels.Controls;
 using Programs_Starter.ViewModels.Helpers;
@@ -31,10 +32,11 @@ namespace Programs_Starter.ViewModels
         public ButtonControl OptionsButton { get; set; }
         public ButtonControl ShowProgramsListButton { get; set; }
         public ProgressBarControl StatusProgressBar { get; set; }
+        
                 
         public MainWindowViewModel()
         {
-            InitializeControls();            
+            InitializeControls();
         }        
 
         private void CancelButtonCommand()

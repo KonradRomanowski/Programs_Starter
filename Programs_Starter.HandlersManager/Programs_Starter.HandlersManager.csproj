@@ -2,11 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <AssemblyVersion>0.0.0.1</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Programs_Starter.HandlersManager\Programs_Starter.HandlersManager.csproj" />
     <ProjectReference Include="..\Programs_Starter.Handlers\Programs_Starter.Handlers.csproj" />
     <ProjectReference Include="..\Programs_Starter.Models\Programs_Starter.Models.csproj" />
   </ItemGroup>
