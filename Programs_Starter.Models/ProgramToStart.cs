@@ -1,4 +1,5 @@
 ﻿using Programs_Starter.Models.Base;
+using Programs_Starter.Models.Helpers;
 
 namespace Programs_Starter.Models
 {
@@ -7,6 +8,7 @@ namespace Programs_Starter.Models
     /// </summary>
     public class ProgramToStart : BaseProgramDefinition
     {
+        public ProgramStatus ProgramStatus { get; private set; }
 
         /// <summary>
         /// Program class
@@ -15,6 +17,12 @@ namespace Programs_Starter.Models
         /// <param name="path">Path to the program</param>
         public ProgramToStart(string name, string path) : base(name, path)
         {
+            ProgramStatus = ProgramStatus.Unknown;
+        }
+
+        public void SetProgramStatus(ProgramStatus newStatus)
+        {
+            ProgramStatus = newStatus;
         }
     }
 }

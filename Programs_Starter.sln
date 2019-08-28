@@ -5,9 +5,11 @@ VisualStudioVersion = 15.0.28307.757
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Programs_Starter.WPFClient", "Programs_Starter.WPFClient\Programs_Starter.WPFClient.csproj", "{5FF2D30C-D109-468E-BB1F-A79E7374013E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Programs_Starter.Models", "Programs_Starter.Models\Programs_Starter.Models.csproj", "{1EBA464F-6F83-4BB9-891B-DF9D5EFB99C5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Programs_Starter.Models", "Programs_Starter.Models\Programs_Starter.Models.csproj", "{1EBA464F-6F83-4BB9-891B-DF9D5EFB99C5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Programs_Starter.ViewModels", "Programs_Starter.ViewModels\Programs_Starter.ViewModels.csproj", "{F300728E-59A6-4F7E-BA91-6EBDD1A2C735}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Programs_Starter.ViewModels", "Programs_Starter.ViewModels\Programs_Starter.ViewModels.csproj", "{F300728E-59A6-4F7E-BA91-6EBDD1A2C735}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Programs_Starter.Handlers", "Programs_Starter.Handlers\Programs_Starter.Handlers.csproj", "{FB625EE8-71B6-4BFD-9339-69C6A025750A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{F300728E-59A6-4F7E-BA91-6EBDD1A2C735}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F300728E-59A6-4F7E-BA91-6EBDD1A2C735}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F300728E-59A6-4F7E-BA91-6EBDD1A2C735}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB625EE8-71B6-4BFD-9339-69C6A025750A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB625EE8-71B6-4BFD-9339-69C6A025750A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB625EE8-71B6-4BFD-9339-69C6A025750A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB625EE8-71B6-4BFD-9339-69C6A025750A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
