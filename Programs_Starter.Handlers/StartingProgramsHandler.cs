@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Programs_Starter.Handlers
 {
-    public class StartingProgramsHandler : BaseHandler
+    public class StartingProgramsHandler : BaseLoggingHandler
     {
         private const string NAME = "StartingProgramsHandler";
         
@@ -20,7 +20,25 @@ namespace Programs_Starter.Handlers
 
         public bool TryAddProgramToStart(ProgramToStart program)
         {
+            int i = GetNewIndexForProgramToStart();
+
+            try
+            {
+                ProgramsToStart.Add(i, program);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Logger.DoErrorLogKV("Error while trying to add new program to ProgramsToStart dictionary: ", 
+                    "Program", program.ToString(), "Error", ex.Message);
+            }
+
             return false;
+        }
+
+        private int GetNewIndexForProgramToStart()
+        {
+            return ProgramsToStart.Count + 1;
         }
     }
 }

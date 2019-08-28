@@ -24,5 +24,10 @@ namespace Programs_Starter.Models
         {
             ProgramStatus = newStatus;
         }
+
+        public override string ToString()
+        {
+            return $"Name: {Name}, Path: {Path}";
+        }
     }
 }

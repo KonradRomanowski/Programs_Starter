@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Programs_Starter.ViewModels
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Programs_Starter.Handlers", "Programs_Starter.Handlers\Programs_Starter.Handlers.csproj", "{FB625EE8-71B6-4BFD-9339-69C6A025750A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Programs_Starter.Models.Tests", "Programs_Starter.Models.Tests\Programs_Starter.Models.Tests.csproj", "{0D445025-AC0D-4190-A05E-241DD550CEE7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{FB625EE8-71B6-4BFD-9339-69C6A025750A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FB625EE8-71B6-4BFD-9339-69C6A025750A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FB625EE8-71B6-4BFD-9339-69C6A025750A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D445025-AC0D-4190-A05E-241DD550CEE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D445025-AC0D-4190-A05E-241DD550CEE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D445025-AC0D-4190-A05E-241DD550CEE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D445025-AC0D-4190-A05E-241DD550CEE7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
