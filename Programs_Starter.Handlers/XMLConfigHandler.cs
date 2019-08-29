@@ -12,6 +12,8 @@ namespace Programs_Starter.Handlers
     {
         private const string NAME = "XMLConfigHandler";
 
+        private const string PROGRAMS_TO_START_XML_PATH = "/Programs_Starter/ProgramsToStart/Program";
+
         public string XMLPath { get; private set; }
 
         public delegate void NoProgramsToStartFoundDelegate();
@@ -133,7 +135,7 @@ namespace Programs_Starter.Handlers
                 {
                     doc.Load(XMLPath);
 
-                    XmlNodeList programsToStartNodes = doc.DocumentElement.SelectNodes("/Programs_Starter/ProgramsToStart/Program");
+                    XmlNodeList programsToStartNodes = doc.DocumentElement.SelectNodes(PROGRAMS_TO_START_XML_PATH);
 
                     if (programsToStartNodes != null && programsToStartNodes.Count > 0)
                     {
@@ -165,6 +167,59 @@ namespace Programs_Starter.Handlers
             }
 
             return programsDict;
+        }
+
+        /// <summary>
+        /// This method is saving ProgramsToStart into the XMLFile
+        /// </summary>
+        /// <param name="newList">Dict of ProgramToStart which you want to save into xml</param>
+        public void SaveProgramsToStartDict(Dictionary<int, ProgramToStart> newDictionary)
+        {
+            XmlDocument doc = new XmlDocument();
+            
+            if (XMLPath == null)
+            {
+                Logger.DoErrorLog("Error in SaveProgramsToStartDict: XMLPath is null");
+            }
+
+            if (File.Exists(XMLPath))
+            {
+                try
+                {
+                    doc.Load(XMLPath);
+
+                    XmlNodeList programsToStartNodes = doc.DocumentElement.SelectNodes(PROGRAMS_TO_START_XML_PATH);
+
+                    //clear whole list
+                    for (int i = programsToStartNodes.Count - 1; i >= 0; i--)
+                    {
+                        programsToStartNodes[i].ParentNode.RemoveChild(programsToStartNodes[i]);
+                    }
+
+                    //create a new one
+                    foreach (var item in newDictionary)
+                    {
+                        XmlElement childElement = doc.CreateElement("Program");
+                        childElement.SetAttribute("order", item.Key.ToString());
+                        childElement.SetAttribute("name", item.Value.Name);
+                        childElement.SetAttribute("path", item.Value.Path);
+                        XmlNode parentNode = doc.DocumentElement.SelectSingleNode("/Programs_Starter/ProgramsToStart");
+                        parentNode.InsertAfter(childElement, parentNode.LastChild);
+                    }
+
+                    //save the file
+                    doc.Save(XMLPath);
+                }
+                catch (Exception ex)
+                {
+                    Logger.DoErrorLogKV("Error in SaveProgramsToStartDict: ", "XMLPath", XMLPath,
+                        "Error", ex.Message);
+                }
+            }
+            else
+            {
+                Logger.DoErrorLog("Error in SaveProgramsToStartDict XML file not found at path: " + XMLPath);
+            }
         }
     }
 }

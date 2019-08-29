@@ -14,5 +14,10 @@ namespace Programs_Starter.HandlersManaging
         {
             StartingProgramsHandler.InitializeProgramsToStartDictionary(XMLConfigHandler.ReadProgramsToStartFromConfig());
         }
+
+        public static void SaveProgramsToStartToConfig()
+        {
+            XMLConfigHandler.SaveProgramsToStartDict(StartingProgramsHandler.ProgramsToStart);
+        }
     }
 }

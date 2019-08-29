@@ -26,6 +26,7 @@ namespace Programs_Starter.ViewModels
         public TextBlockControl MainMessage { get; set; }
         public TextBlockControl AboutText { get; set; }
         public ButtonControl CancelButton { get; set; }
+        public ButtonControl SaveButton { get; set; }
         public ButtonControl ThankYouButton { get; set; }
         public ButtonControl StartNowButton { get; set; }
         public ButtonControl DontStartButton { get; set; }
@@ -35,12 +36,13 @@ namespace Programs_Starter.ViewModels
         
                 
         public MainWindowViewModel()
-        {
-            InitializeControls();
+        {            
             HandlersManager.StartingProgramsHandler.AddedNewProgram += NewProgramAddedToStartingProgramsHandler;
             HandlersManager.XMLConfigHandler.NoProgramsToStartFound += NoProgramsToStartFound;
 
             HandlersManager.LoadProgramsToStartFromConfig();
+
+            InitializeControls();
         }
 
         private void NoProgramsToStartFound()
@@ -65,6 +67,11 @@ namespace Programs_Starter.ViewModels
 
             MainWindowSettings.Height = 400;
             ProgramsToStart.IsVisible = true;
+        }
+
+        private void SaveButtonCommand()
+        {
+            HandlersManager.SaveProgramsToStartToConfig();
         }
 
         private void StartNowButtonCommand()
@@ -92,6 +99,14 @@ namespace Programs_Starter.ViewModels
                 Text = "Przycisk Cancel",
                 IsVisible = true,
                 Command = new RelayCommand(CancelButtonCommand)
+            };
+
+            SaveButton = new ButtonControl
+            {
+                ForegroundColor = ControlsColors.BLACK,
+                Text = "Save",
+                IsVisible = true,
+                Command = new RelayCommand(SaveButtonCommand)
             };
 
             StartNowButton = new ButtonControl
