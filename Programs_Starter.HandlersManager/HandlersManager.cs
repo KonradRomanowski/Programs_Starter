@@ -12,7 +12,7 @@ namespace Programs_Starter.HandlersManaging
 
         public static void LoadProgramsToStartFromConfig()
         {
-
+            StartingProgramsHandler.InitializeProgramsToStartDictionary(XMLConfigHandler.ReadProgramsToStartFromConfig());
         }
     }
 }

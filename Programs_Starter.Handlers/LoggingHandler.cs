@@ -30,6 +30,10 @@ namespace Programs_Starter.Handlers
                 CreateEmptyLogFile();
         }
 
+        /// <summary>
+        /// Creates Warning Log
+        /// </summary>
+        /// <param name="logContent"></param>
         public void DoWarningLog(string logContent)
         {
             WarningLog log = new WarningLog(DateTime.Now, parentClassName, logContent);
@@ -37,6 +41,11 @@ namespace Programs_Starter.Handlers
             StoreLog(log);
         }
 
+        /// <summary>
+        /// Creates Warning Log with key values
+        /// </summary>
+        /// <param name="logContent"></param>
+        /// <param name="values"></param>
         public void DoWarningLogKV(string logContent, params string[] values)
         {
             StringBuilder stringBuilder = new StringBuilder();
@@ -55,6 +64,10 @@ namespace Programs_Starter.Handlers
             StoreLog(log);
         }
 
+        /// <summary>
+        /// Creates Error Log
+        /// </summary>
+        /// <param name="logContent"></param>
         public void DoErrorLog(string logContent)
         {
             ErrorLog log = new ErrorLog(DateTime.Now, parentClassName, logContent);
@@ -62,6 +75,11 @@ namespace Programs_Starter.Handlers
             StoreLog(log);            
         }
         
+        /// <summary>
+        /// Creates Error Log with key values
+        /// </summary>
+        /// <param name="logContent"></param>
+        /// <param name="values"></param>
         public void DoErrorLogKV(string logContent, params string[] values)
         {
             StringBuilder stringBuilder = new StringBuilder();
@@ -80,6 +98,10 @@ namespace Programs_Starter.Handlers
             StoreLog(log);
         }
 
+        /// <summary>
+        /// This method is storing the log
+        /// </summary>
+        /// <param name="log"></param>
         private void StoreLog(BaseLog log)
         {
             Logs.Add(log);

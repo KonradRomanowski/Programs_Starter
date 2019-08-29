@@ -38,8 +38,17 @@ namespace Programs_Starter.ViewModels
         {
             InitializeControls();
             HandlersManager.StartingProgramsHandler.AddedNewProgram += NewProgramAddedToStartingProgramsHandler;
+            HandlersManager.XMLConfigHandler.NoProgramsToStartFound += NoProgramsToStartFound;
+
+            HandlersManager.LoadProgramsToStartFromConfig();
         }
-        
+
+        private void NoProgramsToStartFound()
+        {
+            MainMessage.Text = "No programs to start added - add some programs first!";
+            MainMessage.ForegroundColor = ControlsColors.RED;
+        }
+
         private void NewProgramAddedToStartingProgramsHandler(int order, ProgramToStart program)
         {
             ProgramsToStart.DataCollection.Add(new ProgramToStartWrapper(program, order));        

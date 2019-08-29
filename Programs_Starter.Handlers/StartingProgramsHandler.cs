@@ -19,8 +19,11 @@ namespace Programs_Starter.Handlers
         public StartingProgramsHandler() : base(NAME)
         {
             ProgramsToStart = new Dictionary<int, ProgramToStart>();
-            ProgramsToStart.Add(1, new ProgramToStart("test1", "D://test1.txt"));
-            ProgramsToStart.Add(2, new ProgramToStart("test2", "D://test2.txt"));
+        }
+
+        public void InitializeProgramsToStartDictionary(Dictionary<int, ProgramToStart> programs)
+        {
+            ProgramsToStart = programs;
         }
 
         public bool TryAddProgramToStart(ProgramToStart program)
