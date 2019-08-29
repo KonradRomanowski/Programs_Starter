@@ -4,6 +4,7 @@ using Programs_Starter.Models.Base;
 using Programs_Starter.Models.Helpers;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace Programs_Starter.Handlers
@@ -14,12 +15,19 @@ namespace Programs_Starter.Handlers
 
         private string parentClassName;
 
+        private string logFilePath;
+
         public List<BaseLog> Logs { get; private set; }
 
         public LoggingHandler(string _parentClassName) : base(NAME)
         {
             parentClassName = _parentClassName;
             Logs = new List<BaseLog>();
+
+            ObtainLogFilePath();
+
+            if (!LogFileExist())
+                CreateEmptyLogFile();
         }
 
         public void DoWarningLog(string logContent)
@@ -75,6 +83,90 @@ namespace Programs_Starter.Handlers
         private void StoreLog(BaseLog log)
         {
             Logs.Add(log);
+
+            try
+            {
+                File.AppendAllText(logFilePath, log.ToString() + Environment.NewLine);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error in LoggingHandler.StoreLog: " + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// This method is obtaining LogFilePath for LoggingHandler - must be used before all other methods
+        /// </summary>
+        private void ObtainLogFilePath()
+        {
+            //if 'try catch' fails then logFilePath will be null
+            logFilePath = null;
+
+            try
+            {
+                logFilePath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase);
+                logFilePath = Path.Combine(logFilePath, "Log\\log.txt");
+                logFilePath = new Uri(logFilePath).LocalPath;  //this will cut 'file:///' at the beginning of path from .CodeBase method
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error in LoggingHandler.ObtainLogFilePath: " + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// This method is checking log file exists at LogFilePath
+        /// </summary>
+        private bool LogFileExist()
+        {
+            if (!string.IsNullOrWhiteSpace(logFilePath) && File.Exists(logFilePath))
+                return true;
+            
+            return false;
+        }
+
+        /// <summary>
+        /// This method creates new empty log file at LogFilePath
+        /// </summary>
+        private void CreateEmptyLogFile()
+        {
+            if (string.IsNullOrWhiteSpace(logFilePath))
+            {
+                throw new Exception("Cannot create empty log file, because logFilePath is null, empty or whitespace: " + logFilePath);
+            }
+
+            if (!Directory.Exists(logFilePath) && !TryToCreateLogDirectory())
+            {
+                throw new Exception("Cannot create empty log file, because Log folder didn't exists");
+            }
+
+            try
+            {
+                File.Create(logFilePath).Dispose();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error while creating new empty log file at logFilePath" + logFilePath +
+                    " Error: " + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// This method tries to create Log directory
+        /// </summary>
+        /// <returns></returns>
+        private bool TryToCreateLogDirectory()
+        {
+            try
+            {
+                Directory.CreateDirectory(logFilePath.Remove(logFilePath.Length - 8)); //remove "\\log.txt" from logFilePath
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error while creating Log directory for logFilePath: " + logFilePath +
+                    " Error: " + ex.Message);
+            }
         }
     }
 }

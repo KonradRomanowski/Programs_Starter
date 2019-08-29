@@ -1,4 +1,5 @@
 ﻿using Programs_Starter.Handlers.Base;
+using Programs_Starter.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,6 +13,9 @@ namespace Programs_Starter.Handlers
         private const string NAME = "XMLConfigHandler";
 
         public string XMLPath { get; private set; }
+
+        public delegate void NoProgramsToStartFoundDelegate();
+        public NoProgramsToStartFoundDelegate NoProgramsToStartFound;
 
         public XMLConfigHandler() : base(NAME)
         {
@@ -113,6 +117,54 @@ namespace Programs_Starter.Handlers
             }
         }
 
+        /// <summary>
+        /// This method is reading all programs from xml file and returns them as Dictionary
+        /// </summary>
+        /// <returns>Dictionary with programs to start, empty if no programs found</returns>
+        public Dictionary<int, ProgramToStart> ReadProgramsToStartFromConfig()
+        {
+            Dictionary<int, ProgramToStart> programsDict = new Dictionary<int, ProgramToStart>();
+            XmlDocument doc = new XmlDocument();
+            int temp = 0;
 
+            if (File.Exists(XMLPath))
+            {
+                try
+                {
+                    doc.Load(XMLPath);
+
+                    XmlNodeList programsToStartNodes = doc.DocumentElement.SelectNodes("/Programs_Starter/ProgramsToStart/Program");
+
+                    if (programsToStartNodes != null && programsToStartNodes.Count > 0)
+                    {
+                        foreach (XmlNode programNode in programsToStartNodes)
+                        {
+                            ProgramToStart _program = new ProgramToStart(programNode.Attributes["name"].Value, programNode.Attributes["path"].Value);
+                            if (int.TryParse(programNode.Attributes["order"].Value, out temp))
+                                programsDict.Add(temp, _program);
+                            else
+                                Logger.DoErrorLogKV("Starting Order could not be parsed into int: ", "Program", _program.Name);
+                        }
+                    }
+                    else
+                    {
+                        Logger.DoWarningLog("No programs to start found in xml file");
+                        NoProgramsToStartFound?.Invoke();
+                    }                    
+                }
+                catch (Exception ex)
+                {
+                    Logger.DoErrorLogKV("Error while reading ProgramsToStart from xml: ", "XMLPath", XMLPath,
+                        "Error", ex.Message);
+                }
+                
+            }
+            else
+            {
+                Logger.DoErrorLog("Error while reading ProgramsToStart from xml - XML file not found at path: " + XMLPath);
+            }
+
+            return programsDict;
+        }
     }
 }

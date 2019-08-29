@@ -1,5 +1,4 @@
-﻿using Programs_Starter.Handlers;
-using Programs_Starter.MainProgram;
+﻿using Programs_Starter.HandlersManaging;
 using Programs_Starter.Models;
 using Programs_Starter.ViewModels.Base;
 using Programs_Starter.ViewModels.Controls;
@@ -38,21 +37,12 @@ namespace Programs_Starter.ViewModels
         public MainWindowViewModel()
         {
             InitializeControls();
-            HandlersManager.StartingProgramsHandler.DictChange += Test;
+            HandlersManager.StartingProgramsHandler.AddedNewProgram += NewProgramAddedToStartingProgramsHandler;
         }
-
-        //private StartingProgramsHandler.DictChangeDelegate Test()
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        private void Test()
+        
+        private void NewProgramAddedToStartingProgramsHandler(int order, ProgramToStart program)
         {
-            ProgramsToStart.DataCollection.Clear();
-            foreach (var program in HandlersManager.StartingProgramsHandler.ProgramsToStart)
-            {
-                ProgramsToStart.DataCollection.Add(new ProgramToStartWrapper(program.Value, program.Key));
-            }            
+            ProgramsToStart.DataCollection.Add(new ProgramToStartWrapper(program, order));        
         }
 
         private void CancelButtonCommand()
@@ -121,12 +111,6 @@ namespace Programs_Starter.ViewModels
             {
                 ProgramsToStart.DataCollection.Add(new ProgramToStartWrapper(program.Value, program.Key));
             }
-
-            //    {
-            //        new ProgramToStartWrapper(new ProgramToStart("test1", "D://test1.txt")),
-            //        new ProgramToStartWrapper(new ProgramToStart("test2", "D://test2.txt")),
-            //        new ProgramToStartWrapper(new ProgramToStart("test3", "D://test3.txt")),
-            //    };
         }
     }
 }

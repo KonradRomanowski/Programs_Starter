@@ -13,8 +13,8 @@ namespace Programs_Starter.Handlers
         
         public Dictionary<int, ProgramToStart> ProgramsToStart { get; private set; }
 
-        public delegate void DictChangeDelegate();
-        public DictChangeDelegate DictChange;
+        public delegate void AddedNewProgramDelegate(int order, ProgramToStart program);
+        public AddedNewProgramDelegate AddedNewProgram;
 
         public StartingProgramsHandler() : base(NAME)
         {
@@ -30,7 +30,7 @@ namespace Programs_Starter.Handlers
             try
             {
                 ProgramsToStart.Add(i, program);
-                DictChange?.Invoke();
+                AddedNewProgram?.Invoke(i, program);
                 return true;
             }
             catch (Exception ex)
