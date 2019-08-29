@@ -1,4 +1,5 @@
-﻿using Programs_Starter.MainProgram;
+﻿using Programs_Starter.Handlers;
+using Programs_Starter.MainProgram;
 using Programs_Starter.Models;
 using Programs_Starter.ViewModels.Base;
 using Programs_Starter.ViewModels.Controls;
@@ -37,7 +38,22 @@ namespace Programs_Starter.ViewModels
         public MainWindowViewModel()
         {
             InitializeControls();
-        }        
+            HandlersManager.StartingProgramsHandler.DictChange += Test;
+        }
+
+        //private StartingProgramsHandler.DictChangeDelegate Test()
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        private void Test()
+        {
+            ProgramsToStart.DataCollection.Clear();
+            foreach (var program in HandlersManager.StartingProgramsHandler.ProgramsToStart)
+            {
+                ProgramsToStart.DataCollection.Add(new ProgramToStartWrapper(program.Value, program.Key));
+            }            
+        }
 
         private void CancelButtonCommand()
         {            
@@ -50,6 +66,11 @@ namespace Programs_Starter.ViewModels
 
             MainWindowSettings.Height = 400;
             ProgramsToStart.IsVisible = true;
+        }
+
+        private void StartNowButtonCommand()
+        {
+            HandlersManager.StartingProgramsHandler.TryAddProgramToStart(new ProgramToStart("test3", "D://test3.txt"));
         }
 
         private void InitializeControls()
@@ -74,6 +95,14 @@ namespace Programs_Starter.ViewModels
                 Command = new RelayCommand(CancelButtonCommand)
             };
 
+            StartNowButton = new ButtonControl
+            {
+                ForegroundColor = ControlsColors.BLACK,
+                Text = "Start",
+                IsVisible = true,
+                Command = new RelayCommand(StartNowButtonCommand)
+            };
+
             StatusProgressBar = new ProgressBarControl
             {
                 IsVisible = true,
@@ -87,12 +116,17 @@ namespace Programs_Starter.ViewModels
 
             ProgramsToStart = new DataGridControl<ProgramToStartWrapper>();
             ProgramsToStart.IsVisible = false;
-            ProgramsToStart.DataCollection = new ObservableCollection<ProgramToStartWrapper>()
+            ProgramsToStart.DataCollection = new ObservableCollection<ProgramToStartWrapper>();
+            foreach (var program in HandlersManager.StartingProgramsHandler.ProgramsToStart)
             {
-                new ProgramToStartWrapper(new ProgramToStart("test1", "D://test1.txt")),
-                new ProgramToStartWrapper(new ProgramToStart("test2", "D://test2.txt")),
-                new ProgramToStartWrapper(new ProgramToStart("test3", "D://test3.txt")),
-            };
+                ProgramsToStart.DataCollection.Add(new ProgramToStartWrapper(program.Value, program.Key));
+            }
+
+            //    {
+            //        new ProgramToStartWrapper(new ProgramToStart("test1", "D://test1.txt")),
+            //        new ProgramToStartWrapper(new ProgramToStart("test2", "D://test2.txt")),
+            //        new ProgramToStartWrapper(new ProgramToStart("test3", "D://test3.txt")),
+            //    };
         }
     }
 }

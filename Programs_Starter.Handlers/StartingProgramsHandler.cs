@@ -13,9 +13,14 @@ namespace Programs_Starter.Handlers
         
         public Dictionary<int, ProgramToStart> ProgramsToStart { get; private set; }
 
+        public delegate void DictChangeDelegate();
+        public DictChangeDelegate DictChange;
+
         public StartingProgramsHandler() : base(NAME)
         {
             ProgramsToStart = new Dictionary<int, ProgramToStart>();
+            ProgramsToStart.Add(1, new ProgramToStart("test1", "D://test1.txt"));
+            ProgramsToStart.Add(2, new ProgramToStart("test2", "D://test2.txt"));
         }
 
         public bool TryAddProgramToStart(ProgramToStart program)
@@ -25,6 +30,7 @@ namespace Programs_Starter.Handlers
             try
             {
                 ProgramsToStart.Add(i, program);
+                DictChange?.Invoke();
                 return true;
             }
             catch (Exception ex)
