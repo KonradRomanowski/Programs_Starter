@@ -9,6 +9,7 @@ namespace Programs_Starter.HandlersManaging
     {
         public static XMLConfigHandler XMLConfigHandler = new XMLConfigHandler();
         public static StartingProgramsHandler StartingProgramsHandler = new StartingProgramsHandler();
+        public static OptionsHandler OptionsHandler = new OptionsHandler();
 
         public static void LoadProgramsToStartFromConfig()
         {

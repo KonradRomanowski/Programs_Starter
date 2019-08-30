@@ -16,6 +16,9 @@ namespace Programs_Starter.Handlers
         public delegate void AddedNewProgramDelegate(int order, ProgramToStart program);
         public AddedNewProgramDelegate AddedNewProgram;
 
+        public delegate void ProgramsToStartLoadedSuccesfullyDelegate();
+        public ProgramsToStartLoadedSuccesfullyDelegate ProgramsToStartLoadedSuccesfully;
+
         public StartingProgramsHandler() : base(NAME)
         {
             ProgramsToStart = new Dictionary<int, ProgramToStart>();
@@ -24,6 +27,7 @@ namespace Programs_Starter.Handlers
         public void InitializeProgramsToStartDictionary(Dictionary<int, ProgramToStart> programs)
         {
             ProgramsToStart = programs;
+            ProgramsToStartLoadedSuccesfully?.Invoke();
         }
 
         public bool TryAddProgramToStart(ProgramToStart program)

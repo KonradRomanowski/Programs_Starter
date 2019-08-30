@@ -38,17 +38,30 @@ namespace Programs_Starter.ViewModels
         public MainWindowViewModel()
         {
             InitializeControls();
-
-            HandlersManager.StartingProgramsHandler.AddedNewProgram += NewProgramAddedToStartingProgramsHandler;
-            HandlersManager.XMLConfigHandler.NoProgramsToStartFound += NoProgramsToStartFound;
+            InitializeDelegatesFromHandlersManager();
 
             HandlersManager.LoadProgramsToStartFromConfig();
-            
+        }
+
+        private void InitializeDelegatesFromHandlersManager()
+        {
+            HandlersManager.StartingProgramsHandler.AddedNewProgram += NewProgramAddedToStartingProgramsHandler;
+            HandlersManager.StartingProgramsHandler.ProgramsToStartLoadedSuccesfully += ProgramsToStartLoaded;
+            HandlersManager.XMLConfigHandler.NoProgramsToStartFound += NoProgramsToStartFound;
+        }
+
+        private void ProgramsToStartLoaded()
+        {
+            ProgramsToStart.DataCollection = new ObservableCollection<ProgramToStartWrapper>();
+            foreach (var program in HandlersManager.StartingProgramsHandler.ProgramsToStart)
+            {
+                ProgramsToStart.DataCollection.Add(new ProgramToStartWrapper(program.Value, program.Key));
+            }
         }
 
         private void NoProgramsToStartFound()
         {
-            MainMessage.Text = "No programs to start added - add some programs first!";
+            MainMessage.Text = "No programs added - add some programs first!";
             MainMessage.ForegroundColor = ControlsColors.RED;
         }
 
@@ -130,12 +143,7 @@ namespace Programs_Starter.ViewModels
             AboutText.Text = "v. 0.0.0.1  KR @ 2019";
 
             ProgramsToStart = new DataGridControl<ProgramToStartWrapper>();
-            ProgramsToStart.IsVisible = false;
-            ProgramsToStart.DataCollection = new ObservableCollection<ProgramToStartWrapper>();
-            foreach (var program in HandlersManager.StartingProgramsHandler.ProgramsToStart)
-            {
-                ProgramsToStart.DataCollection.Add(new ProgramToStartWrapper(program.Value, program.Key));
-            }
+            ProgramsToStart.IsVisible = false;            
         }
     }
 }
