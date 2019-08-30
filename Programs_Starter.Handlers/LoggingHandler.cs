@@ -13,6 +13,9 @@ namespace Programs_Starter.Handlers
     {
         private const string NAME = "LoggingHandler";
 
+        private const string LOG_FILE_NAME = "log.txt";
+        private const string LOG_FILE_PATH = "Log\\" + LOG_FILE_NAME;
+
         private string parentClassName;
 
         private string logFilePath;
@@ -56,7 +59,7 @@ namespace Programs_Starter.Handlers
                 if (i.IsEven())
                     stringBuilder.Append(values[i]);
                 else
-                    stringBuilder.Append($"=<{values[i]}>");
+                    stringBuilder.Append($"=<{values[i]}> ");
             }
 
             WarningLog log = new WarningLog(DateTime.Now, parentClassName, stringBuilder.ToString());
@@ -90,7 +93,7 @@ namespace Programs_Starter.Handlers
                 if (i.IsEven())
                     stringBuilder.Append(values[i]);
                 else
-                    stringBuilder.Append($"=<{values[i]}>");
+                    stringBuilder.Append($"=<{values[i]}> ");
             }
 
             ErrorLog log = new ErrorLog(DateTime.Now, parentClassName, stringBuilder.ToString());
@@ -127,7 +130,7 @@ namespace Programs_Starter.Handlers
             try
             {
                 logFilePath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase);
-                logFilePath = Path.Combine(logFilePath, "Log\\log.txt");
+                logFilePath = Path.Combine(logFilePath, LOG_FILE_PATH);
                 logFilePath = new Uri(logFilePath).LocalPath;  //this will cut 'file:///' at the beginning of path from .CodeBase method
             }
             catch (Exception ex)
@@ -181,7 +184,7 @@ namespace Programs_Starter.Handlers
         {
             try
             {
-                Directory.CreateDirectory(logFilePath.Remove(logFilePath.Length - 8)); //remove "\\log.txt" from logFilePath
+                Directory.CreateDirectory(logFilePath.Remove(logFilePath.Length - LOG_FILE_NAME.Length - 1)); //remove "\\log.txt" from logFilePath
                 return true;
             }
             catch (Exception ex)

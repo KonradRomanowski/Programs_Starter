@@ -11,8 +11,13 @@ namespace Programs_Starter.Handlers
     public class XMLConfigHandler : BaseLoggingHandler
     {
         private const string NAME = "XMLConfigHandler";
-
-        private const string PROGRAMS_TO_START_XML_PATH = "/Programs_Starter/ProgramsToStart/Program";
+                
+        private const string CONFIG_FILE_NAME = "configuration.xml";
+        private const string CONFIG_FILE_PATH = "Data\\" + CONFIG_FILE_NAME;
+        private const string XML_MAIN_NODE_NAME = "Programs_Starter";
+        private const string XML_SETTINGS_NODE_NAME = "ProgramSettings";
+        private const string XML_PROGRAMS_NODE_NAME = "ProgramsToStart";
+        private const string PROGRAMS_TO_START_XML_PATH = "/" + XML_MAIN_NODE_NAME + "/" + XML_PROGRAMS_NODE_NAME + "/Program";
 
         public string XMLPath { get; private set; }
 
@@ -38,7 +43,7 @@ namespace Programs_Starter.Handlers
             try
             {
                 XMLPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase);
-                XMLPath = Path.Combine(XMLPath, "Data\\configuration.xml");
+                XMLPath = Path.Combine(XMLPath, CONFIG_FILE_PATH);
                 XMLPath = new Uri(XMLPath).LocalPath;  //this will cut 'file:///' at the beginning of path from .CodeBase method
             }
             catch (Exception ex)
@@ -82,13 +87,13 @@ namespace Programs_Starter.Handlers
                 XmlNode docNode = doc.CreateXmlDeclaration("1.0", "UTF-8", null);
                 doc.AppendChild(docNode);
 
-                XmlNode mainNode = doc.CreateElement("Programs_Starter");
+                XmlNode mainNode = doc.CreateElement(XML_MAIN_NODE_NAME);
                 doc.AppendChild(mainNode);
 
-                XmlNode settingsNode = doc.CreateElement("ProgramSettings");
+                XmlNode settingsNode = doc.CreateElement(XML_SETTINGS_NODE_NAME);
                 mainNode.AppendChild(settingsNode);
 
-                XmlNode programsNode = doc.CreateElement("ProgramsToStart");
+                XmlNode programsNode = doc.CreateElement(XML_PROGRAMS_NODE_NAME);
                 mainNode.AppendChild(programsNode);
 
                 doc.Save(XMLPath);
@@ -108,7 +113,7 @@ namespace Programs_Starter.Handlers
         {
             try
             {
-                Directory.CreateDirectory(XMLPath.Remove(XMLPath.Length - 18)); //remove "\\configuration.xml" from XMLPath
+                Directory.CreateDirectory(XMLPath.Remove(XMLPath.Length - CONFIG_FILE_NAME.Length - 1)); //remove "\\configuration.xml" from XMLPath
                 return true;
             }
             catch (Exception ex)
@@ -203,7 +208,7 @@ namespace Programs_Starter.Handlers
                         childElement.SetAttribute("order", item.Key.ToString());
                         childElement.SetAttribute("name", item.Value.Name);
                         childElement.SetAttribute("path", item.Value.Path);
-                        XmlNode parentNode = doc.DocumentElement.SelectSingleNode("/Programs_Starter/ProgramsToStart");
+                        XmlNode parentNode = doc.DocumentElement.SelectSingleNode("/" + XML_MAIN_NODE_NAME + "/" + XML_PROGRAMS_NODE_NAME);
                         parentNode.InsertAfter(childElement, parentNode.LastChild);
                     }
 

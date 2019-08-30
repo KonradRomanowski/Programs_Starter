@@ -36,13 +36,14 @@ namespace Programs_Starter.ViewModels
         
                 
         public MainWindowViewModel()
-        {            
+        {
+            InitializeControls();
+
             HandlersManager.StartingProgramsHandler.AddedNewProgram += NewProgramAddedToStartingProgramsHandler;
             HandlersManager.XMLConfigHandler.NoProgramsToStartFound += NoProgramsToStartFound;
 
             HandlersManager.LoadProgramsToStartFromConfig();
-
-            InitializeControls();
+            
         }
 
         private void NoProgramsToStartFound()
