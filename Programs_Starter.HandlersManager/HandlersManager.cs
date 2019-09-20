@@ -20,5 +20,10 @@ namespace Programs_Starter.HandlersManaging
         {
             XMLConfigHandler.SaveProgramsToStartDict(StartingProgramsHandler.ProgramsToStart);
         }
+
+        public static void LoadOptionsFromConfig()
+        {
+
+        }
     }
 }
