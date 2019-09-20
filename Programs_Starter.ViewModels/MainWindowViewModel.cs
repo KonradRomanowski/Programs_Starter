@@ -21,6 +21,9 @@ namespace Programs_Starter.ViewModels
     /// </summary>
     public class MainWindowViewModel : BaseViewModel
     {
+        public const int MAIN_WINDOW_HEIGHT_SMALL = 160;
+        public const int MAIN_WINDOW_HEIGHT_BIG = 400;        
+
         public MainWindowSettings MainWindowSettings { get; set; }
         public DataGridControl<ProgramToStartWrapper> ProgramsToStart { get; set; }
         public TextBlockControl MainMessage { get; set; }
@@ -78,10 +81,21 @@ namespace Programs_Starter.ViewModels
             MainMessage.ForegroundColor = ControlsColors.RED;
 
             StatusProgressBar.Value = 75;
-            StatusProgressBar.Text = $"Progress: {StatusProgressBar.Value.ToString()}%";
+            StatusProgressBar.Text = $"Progress: {StatusProgressBar.Value.ToString()}%";            
+        }
 
-            MainWindowSettings.Height = 400;
-            ProgramsToStart.IsVisible = true;
+        private void ShowProgramsListButtonCommand()
+        {
+            if (ProgramsToStart.IsVisible)
+            {
+                ProgramsToStart.IsVisible = false;
+                MainWindowSettings.Height = MAIN_WINDOW_HEIGHT_SMALL;
+            }
+            else
+            {
+                ProgramsToStart.IsVisible = true;
+                MainWindowSettings.Height = MAIN_WINDOW_HEIGHT_BIG;                
+            }            
         }
 
         private void SaveButtonCommand()
@@ -98,7 +112,15 @@ namespace Programs_Starter.ViewModels
         {
             MainWindowSettings = new MainWindowSettings
             {
-                Height = 160
+                Height = MAIN_WINDOW_HEIGHT_SMALL,
+            };
+
+            ShowProgramsListButton = new ButtonControl
+            {
+                ForegroundColor = ControlsColors.BLACK,
+                Text = "Programs",
+                IsVisible = true,
+                Command = new RelayCommand(ShowProgramsListButtonCommand)
             };
 
             MainMessage = new TextBlockControl

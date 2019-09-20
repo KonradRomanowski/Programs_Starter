@@ -83,7 +83,17 @@
                     <DataGridTextColumn Header="Order" Binding="{Binding Order, Mode=OneWay}" />
                     <DataGridTextColumn Header="Name" Binding="{Binding Name, Mode=OneWay}" />
                     <DataGridTextColumn Header="Path" Binding="{Binding Path, Mode=OneWay}" />
-                </DataGrid.Columns>                
+                </DataGrid.Columns>
+
+                <DataGrid.ContextMenu>
+                    <ContextMenu Name="ProgramsToStartContextMenu" StaysOpen="true" Background="WhiteSmoke">
+                        <ContextMenu.BitmapEffect>
+                            <BitmapEffectGroup/>
+                        </ContextMenu.BitmapEffect>
+                        <MenuItem Header="Add" Name="AddProgramContextMenu" Command="{Binding AddProgramToProgramsToStartList}"/>
+                        <MenuItem Header="Remove" Name="RemoveProgramContextMenu" Command="{Binding RemoveProgramFromProgramsToStartList}"/>
+                    </ContextMenu>
+                </DataGrid.ContextMenu>
             </DataGrid>
 
             <Button Name="SaveButton" Grid.Column="1" Grid.Row="1" DataContext="{Binding SaveButton}"
