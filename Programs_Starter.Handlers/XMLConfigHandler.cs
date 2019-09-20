@@ -14,10 +14,14 @@ namespace Programs_Starter.Handlers
                 
         private const string CONFIG_FILE_NAME = "configuration.xml";
         private const string CONFIG_FILE_PATH = "Data\\" + CONFIG_FILE_NAME;
+
         private const string XML_MAIN_NODE_NAME = "Programs_Starter";
+
         private const string XML_SETTINGS_NODE_NAME = "ProgramSettings";
         private const string XML_PROGRAMS_NODE_NAME = "ProgramsToStart";
+
         private const string PROGRAMS_TO_START_XML_PATH = "/" + XML_MAIN_NODE_NAME + "/" + XML_PROGRAMS_NODE_NAME + "/Program";
+        private const string OPTIONS_XML_PATH = "/" + XML_MAIN_NODE_NAME + "/" + XML_SETTINGS_NODE_NAME + "/Setting";
 
         public string XMLPath { get; private set; }
 
@@ -225,6 +229,49 @@ namespace Programs_Starter.Handlers
             {
                 Logger.DoErrorLog("Error in SaveProgramsToStartDict XML file not found at path: " + XMLPath);
             }
+        }
+
+        /// <summary>
+        /// This method is reading all options from xml file and returns them as Dictionary
+        /// </summary>
+        /// <returns>Dictionary with options and their values as KeyValuePair string/string, empty if no options found</returns>
+        public Dictionary<string, string> ReadOptionsFromConfig()
+        {
+            Dictionary<string, string> optionsDict = new Dictionary<string, string>();
+            XmlDocument doc = new XmlDocument();
+
+            if (File.Exists(XMLPath))
+            {
+                try
+                {
+                    doc.Load(XMLPath);
+
+                    XmlNodeList optionsNodes = doc.DocumentElement.SelectNodes(OPTIONS_XML_PATH);
+
+                    if (optionsNodes != null && optionsNodes.Count > 0)
+                    {
+                        foreach (XmlNode optionNode in optionsNodes)
+                        {
+                            optionsDict.Add(optionNode.Attributes["name"].Value, optionNode.Attributes["value"].Value);
+                        }
+                    }
+                    else
+                    {
+                        Logger.DoWarningLog("No options found in xml file, default values will be used");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logger.DoErrorLogKV("Error while reading options from xml, default values will be used: ", "XMLPath", XMLPath,
+                        "Error", ex.Message);
+                }
+            }
+            else
+            {
+                Logger.DoErrorLog("Error while reading Options from xml - XML file not found at path: " + XMLPath);
+            }
+
+            return optionsDict;
         }
     }
 }

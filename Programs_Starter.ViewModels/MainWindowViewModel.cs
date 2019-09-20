@@ -40,6 +40,7 @@ namespace Programs_Starter.ViewModels
             InitializeControls();
             InitializeDelegatesFromHandlersManager();
 
+            HandlersManager.LoadOptionsFromConfig();
             HandlersManager.LoadProgramsToStartFromConfig();
         }
 

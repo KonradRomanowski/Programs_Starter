@@ -23,7 +23,7 @@ namespace Programs_Starter.HandlersManaging
 
         public static void LoadOptionsFromConfig()
         {
-
+            OptionsHandler.UpdateMultipleOptionsOnOptionsList(XMLConfigHandler.ReadOptionsFromConfig());
         }
     }
 }
