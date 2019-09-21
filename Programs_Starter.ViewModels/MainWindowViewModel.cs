@@ -1,4 +1,5 @@
-﻿using Programs_Starter.HandlersManaging;
+﻿using Microsoft.Win32;
+using Programs_Starter.HandlersManaging;
 using Programs_Starter.Models;
 using Programs_Starter.ViewModels.Base;
 using Programs_Starter.ViewModels.Controls;
@@ -9,10 +10,12 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Drawing;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace Programs_Starter.ViewModels
 {
@@ -36,8 +39,9 @@ namespace Programs_Starter.ViewModels
         public ButtonControl OptionsButton { get; set; }
         public ButtonControl ShowProgramsListButton { get; set; }
         public ProgressBarControl StatusProgressBar { get; set; }
-        
-                
+
+        public ICommand AddProgramToProgramsToStartList { get; private set; }
+
         public MainWindowViewModel()
         {
             InitializeControls();
@@ -49,8 +53,8 @@ namespace Programs_Starter.ViewModels
 
         private void InitializeDelegatesFromHandlersManager()
         {
-            HandlersManager.StartingProgramsHandler.AddedNewProgram += NewProgramAddedToStartingProgramsHandler;
-            HandlersManager.StartingProgramsHandler.ProgramsToStartLoadedSuccesfully += ProgramsToStartLoaded;
+            HandlersManager.StartingProgramsHandler.ProgramsToStartCollectionChanged += ProgramsToStartCollectionChanged;
+            HandlersManager.StartingProgramsHandler.ProgramsToStartLoadedSuccesfully += ProgramsToStartCollectionInitialized;
             HandlersManager.XMLConfigHandler.NoProgramsToStartFound += NoProgramsToStartFound;
             HandlersManager.XMLConfigHandler.ProgramsToStartSaved += ProgramsToStartSaved;
         }
@@ -69,10 +73,19 @@ namespace Programs_Starter.ViewModels
             }
         }
 
-        private void ProgramsToStartLoaded()
-        {
+        private void ProgramsToStartCollectionInitialized()
+        {            
             ProgramsToStart.DataCollection = new ObservableCollection<ProgramToStartWrapper>();
-            foreach (var program in HandlersManager.StartingProgramsHandler.ProgramsToStart)
+            foreach (var program in HandlersManager.StartingProgramsHandler.ProgramsToStart.OrderBy(x => x.Key))
+            {
+                ProgramsToStart.DataCollection.Add(new ProgramToStartWrapper(program.Value, program.Key));
+            }            
+        }
+
+        private void ProgramsToStartCollectionChanged()
+        {
+            ProgramsToStart.DataCollection.Clear();
+            foreach (var program in HandlersManager.StartingProgramsHandler.ProgramsToStart.OrderBy(x => x.Key))
             {
                 ProgramsToStart.DataCollection.Add(new ProgramToStartWrapper(program.Value, program.Key));
             }
@@ -84,10 +97,10 @@ namespace Programs_Starter.ViewModels
             MainMessage.ForegroundColor = ControlsColors.RED;
         }
 
-        private void NewProgramAddedToStartingProgramsHandler(int order, ProgramToStart program)
-        {
-            ProgramsToStart.DataCollection.Add(new ProgramToStartWrapper(program, order));        
-        }
+        //private void NewProgramAddedToStartingProgramsHandler(int order, ProgramToStart program)
+        //{
+        //    ProgramsToStart.DataCollection.Add(new ProgramToStartWrapper(program, order));
+        //}
 
         private void CancelButtonCommand()
         {            
@@ -120,7 +133,34 @@ namespace Programs_Starter.ViewModels
 
         private void StartNowButtonCommand()
         {
-            HandlersManager.StartingProgramsHandler.TryAddProgramToStart(new ProgramToStart("test3", "D://test3.txt"));
+            throw new NotImplementedException();
+        }
+
+        private void AddProgramToCollectionCommand()
+        {                      
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.CheckFileExists = true;
+            openFileDialog.CheckPathExists = true;
+            openFileDialog.Multiselect = false;
+            openFileDialog.Title = "Select Programs to add to Programs Starter";
+            openFileDialog.ValidateNames = true;
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                ProgramToStart program = new ProgramToStart(openFileDialog.SafeFileName, openFileDialog.FileName);
+
+                //check if user clicked on program or on some empty field in ListView
+                //if user clicked on program then insert new program before the selected item
+                if (ProgramsToStart.SelectedItem != null)
+                {
+                    //ProgramsToStartList.Insert(SelectedProgramOnProgramsToStartListView.StartingOrder - 1, program);
+                }
+                else //if user clicked on some empty field then add new program at the end of the list
+                {
+                    HandlersManager.StartingProgramsHandler.TryAddProgramToStart(program);
+                }                
+            }
+
         }
 
         private void InitializeControls()
@@ -181,7 +221,9 @@ namespace Programs_Starter.ViewModels
             AboutText.Text = "v. 0.0.0.1  KR @ 2019";
 
             ProgramsToStart = new DataGridControl<ProgramToStartWrapper>();
-            ProgramsToStart.IsVisible = false;            
+            ProgramsToStart.IsVisible = false;
+
+            AddProgramToProgramsToStartList = new RelayCommand(AddProgramToCollectionCommand);
         }
     }
 }

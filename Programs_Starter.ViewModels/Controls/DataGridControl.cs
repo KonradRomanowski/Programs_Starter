@@ -9,5 +9,6 @@ namespace Programs_Starter.ViewModels.Controls
     public class DataGridControl<T> : BaseControl
     {
         public ObservableCollection<T> DataCollection { get; set; }
+        public T SelectedItem { get; set; }
     }
 }

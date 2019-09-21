@@ -13,8 +13,8 @@ namespace Programs_Starter.Handlers
         
         public Dictionary<int, ProgramToStart> ProgramsToStart { get; private set; }
 
-        public delegate void AddedNewProgramDelegate(int order, ProgramToStart program);
-        public AddedNewProgramDelegate AddedNewProgram;
+        public delegate void ProgramsToStartCollectionChangedDelegate();
+        public ProgramsToStartCollectionChangedDelegate ProgramsToStartCollectionChanged;
 
         public delegate void ProgramsToStartLoadedSuccesfullyDelegate();
         public ProgramsToStartLoadedSuccesfullyDelegate ProgramsToStartLoadedSuccesfully;
@@ -37,7 +37,7 @@ namespace Programs_Starter.Handlers
             try
             {
                 ProgramsToStart.Add(i, program);
-                AddedNewProgram?.Invoke(i, program);
+                ProgramsToStartCollectionChanged?.Invoke();
                 return true;
             }
             catch (Exception ex)
