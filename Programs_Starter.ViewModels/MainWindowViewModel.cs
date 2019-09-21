@@ -52,6 +52,21 @@ namespace Programs_Starter.ViewModels
             HandlersManager.StartingProgramsHandler.AddedNewProgram += NewProgramAddedToStartingProgramsHandler;
             HandlersManager.StartingProgramsHandler.ProgramsToStartLoadedSuccesfully += ProgramsToStartLoaded;
             HandlersManager.XMLConfigHandler.NoProgramsToStartFound += NoProgramsToStartFound;
+            HandlersManager.XMLConfigHandler.ProgramsToStartSaved += ProgramsToStartSaved;
+        }
+
+        private void ProgramsToStartSaved(bool wasSaveSuccesfull)
+        {
+            if (wasSaveSuccesfull)
+            {
+                MainMessage.Text = "Programs to start saved!";
+                MainMessage.ForegroundColor = ControlsColors.GREEN;
+            }
+            else
+            {
+                MainMessage.Text = "Programs to start not saved - error!";
+                MainMessage.ForegroundColor = ControlsColors.RED;
+            }
         }
 
         private void ProgramsToStartLoaded()
@@ -126,14 +141,14 @@ namespace Programs_Starter.ViewModels
             MainMessage = new TextBlockControl
             {
                 ForegroundColor = ControlsColors.BLACK,
-                Text = "Test tekstu udany!",
+                Text = "Welcome in Programs Starter!",
                 IsVisible = true
             };
 
             CancelButton = new ButtonControl
             {
                 ForegroundColor = ControlsColors.BLACK,
-                Text = "Przycisk Cancel",
+                Text = "Cancel",
                 IsVisible = true,
                 Command = new RelayCommand(CancelButtonCommand)
             };
@@ -149,7 +164,7 @@ namespace Programs_Starter.ViewModels
             StartNowButton = new ButtonControl
             {
                 ForegroundColor = ControlsColors.BLACK,
-                Text = "Start",
+                Text = "Start Now",
                 IsVisible = true,
                 Command = new RelayCommand(StartNowButtonCommand)
             };
@@ -157,9 +172,9 @@ namespace Programs_Starter.ViewModels
             StatusProgressBar = new ProgressBarControl
             {
                 IsVisible = true,
-                Value = 0
+                Value = 0,
+                Text = "Waiting...",
             };
-            StatusProgressBar.Text = "Waiting...";
 
             AboutText = new TextBlockControl();
             AboutText.IsVisible = true;

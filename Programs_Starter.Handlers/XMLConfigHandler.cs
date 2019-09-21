@@ -28,6 +28,9 @@ namespace Programs_Starter.Handlers
         public delegate void NoProgramsToStartFoundDelegate();
         public NoProgramsToStartFoundDelegate NoProgramsToStartFound;
 
+        public delegate void ProgramsToStartSavedDelegate(bool wasSaveSuccesfull);
+        public ProgramsToStartSavedDelegate ProgramsToStartSaved;
+
         public XMLConfigHandler() : base(NAME)
         {
             ObtainXMLPath();
@@ -185,13 +188,8 @@ namespace Programs_Starter.Handlers
         public void SaveProgramsToStartDict(Dictionary<int, ProgramToStart> newDictionary)
         {
             XmlDocument doc = new XmlDocument();
-            
-            if (XMLPath == null)
-            {
-                Logger.DoErrorLog("Error in SaveProgramsToStartDict: XMLPath is null");
-            }
 
-            if (File.Exists(XMLPath))
+            if (XMLPath != null && File.Exists(XMLPath))
             {
                 try
                 {
@@ -218,16 +216,23 @@ namespace Programs_Starter.Handlers
 
                     //save the file
                     doc.Save(XMLPath);
+                    ProgramsToStartSaved?.Invoke(true);
                 }
                 catch (Exception ex)
                 {
                     Logger.DoErrorLogKV("Error in SaveProgramsToStartDict: ", "XMLPath", XMLPath,
                         "Error", ex.Message);
+                    ProgramsToStartSaved?.Invoke(false);
                 }
             }
             else
             {
-                Logger.DoErrorLog("Error in SaveProgramsToStartDict XML file not found at path: " + XMLPath);
+                if (XMLPath == null)
+                    Logger.DoErrorLog("Error in SaveProgramsToStartDict: XMLPath is null");
+                else
+                    Logger.DoErrorLog("Error in SaveProgramsToStartDict XML file not found at path: " + XMLPath);
+
+                ProgramsToStartSaved?.Invoke(false);
             }
         }
 
