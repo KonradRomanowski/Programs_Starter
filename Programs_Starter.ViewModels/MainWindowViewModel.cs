@@ -28,7 +28,7 @@ namespace Programs_Starter.ViewModels
         public const int MAIN_WINDOW_HEIGHT_BIG = 400;        
 
         public MainWindowSettings MainWindowSettings { get; set; }
-        public DataGridControl<ProgramToStartWrapper> ProgramsToStart { get; set; }
+        public ProgramsToStartDataGridWrapper ProgramsToStart { get; set; }
         public TextBlockControl MainMessage { get; set; }
         public TextBlockControl AboutText { get; set; }
         public ButtonControl CancelButton { get; set; }
@@ -52,9 +52,7 @@ namespace Programs_Starter.ViewModels
         }
 
         private void InitializeDelegatesFromHandlersManager()
-        {
-            HandlersManager.StartingProgramsHandler.ProgramsToStartCollectionChanged += ProgramsToStartCollectionChanged;
-            HandlersManager.StartingProgramsHandler.ProgramsToStartLoadedSuccesfully += ProgramsToStartCollectionInitialized;
+        {            
             HandlersManager.XMLConfigHandler.NoProgramsToStartFound += NoProgramsToStartFound;
             HandlersManager.XMLConfigHandler.ProgramsToStartSaved += ProgramsToStartSaved;
         }
@@ -71,37 +69,14 @@ namespace Programs_Starter.ViewModels
                 MainMessage.Text = "Programs to start not saved - error!";
                 MainMessage.ForegroundColor = ControlsColors.RED;
             }
-        }
-
-        private void ProgramsToStartCollectionInitialized()
-        {            
-            ProgramsToStart.DataCollection = new ObservableCollection<ProgramToStartWrapper>();
-            foreach (var program in HandlersManager.StartingProgramsHandler.ProgramsToStart.OrderBy(x => x.Key))
-            {
-                ProgramsToStart.DataCollection.Add(new ProgramToStartWrapper(program.Value, program.Key));
-            }            
-        }
-
-        private void ProgramsToStartCollectionChanged()
-        {
-            ProgramsToStart.DataCollection.Clear();
-            foreach (var program in HandlersManager.StartingProgramsHandler.ProgramsToStart.OrderBy(x => x.Key))
-            {
-                ProgramsToStart.DataCollection.Add(new ProgramToStartWrapper(program.Value, program.Key));
-            }
-        }
+        }        
 
         private void NoProgramsToStartFound()
         {
             MainMessage.Text = "No programs added - add some programs first!";
             MainMessage.ForegroundColor = ControlsColors.RED;
         }
-
-        //private void NewProgramAddedToStartingProgramsHandler(int order, ProgramToStart program)
-        //{
-        //    ProgramsToStart.DataCollection.Add(new ProgramToStartWrapper(program, order));
-        //}
-
+        
         private void CancelButtonCommand()
         {            
             MainMessage.Text = "Test przycisku Cancel udany!";
@@ -220,7 +195,7 @@ namespace Programs_Starter.ViewModels
             AboutText.IsVisible = true;
             AboutText.Text = "v. 0.0.0.1  KR @ 2019";
 
-            ProgramsToStart = new DataGridControl<ProgramToStartWrapper>();
+            ProgramsToStart = new ProgramsToStartDataGridWrapper();
             ProgramsToStart.IsVisible = false;
 
             AddProgramToProgramsToStartList = new RelayCommand(AddProgramToCollectionCommand);
