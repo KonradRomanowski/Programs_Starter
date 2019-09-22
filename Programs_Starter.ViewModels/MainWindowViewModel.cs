@@ -40,7 +40,6 @@ namespace Programs_Starter.ViewModels
         public ButtonControl ShowProgramsListButton { get; set; }
         public ProgressBarControl StatusProgressBar { get; set; }
 
-        public ICommand AddProgramToProgramsToStartList { get; private set; }
 
         public MainWindowViewModel()
         {
@@ -109,34 +108,7 @@ namespace Programs_Starter.ViewModels
         private void StartNowButtonCommand()
         {
             throw new NotImplementedException();
-        }
-
-        private void AddProgramToCollectionCommand()
-        {                      
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.CheckFileExists = true;
-            openFileDialog.CheckPathExists = true;
-            openFileDialog.Multiselect = false;
-            openFileDialog.Title = "Select Programs to add to Programs Starter";
-            openFileDialog.ValidateNames = true;
-
-            if (openFileDialog.ShowDialog() == true)
-            {
-                ProgramToStart program = new ProgramToStart(openFileDialog.SafeFileName, openFileDialog.FileName);
-
-                //check if user clicked on program or on some empty field in ListView
-                //if user clicked on program then insert new program before the selected item
-                if (ProgramsToStart.SelectedItem != null)
-                {
-                    //ProgramsToStartList.Insert(SelectedProgramOnProgramsToStartListView.StartingOrder - 1, program);
-                }
-                else //if user clicked on some empty field then add new program at the end of the list
-                {
-                    HandlersManager.StartingProgramsHandler.TryAddProgramToStart(program);
-                }                
-            }
-
-        }
+        }        
 
         private void InitializeControls()
         {
@@ -196,9 +168,7 @@ namespace Programs_Starter.ViewModels
             AboutText.Text = "v. 0.0.0.1  KR @ 2019";
 
             ProgramsToStart = new ProgramsToStartDataGridWrapper();
-            ProgramsToStart.IsVisible = false;
-
-            AddProgramToProgramsToStartList = new RelayCommand(AddProgramToCollectionCommand);
+            ProgramsToStart.IsVisible = false;            
         }
     }
 }

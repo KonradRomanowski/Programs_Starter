@@ -90,8 +90,8 @@
                         <ContextMenu.BitmapEffect>
                             <BitmapEffectGroup/>
                         </ContextMenu.BitmapEffect>
-                        <MenuItem Header="Add" Name="AddProgramContextMenu" Command="{Binding AddProgramToProgramsToStartList}"/>
-                        <MenuItem Header="Remove" Name="RemoveProgramContextMenu" Command="{Binding RemoveProgramFromProgramsToStartList}"/>
+                        <MenuItem Header="Add" Name="AddProgramContextMenu" Command="{Binding ProgramsToStart.AddProgramToProgramsToStartList}"/>
+                        <MenuItem Header="Remove" Name="RemoveProgramContextMenu" Command="{Binding ProgramsToStart.RemoveProgramFromProgramsToStartList}"/>
                     </ContextMenu>
                 </DataGrid.ContextMenu>
             </DataGrid>
