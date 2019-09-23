@@ -15,6 +15,7 @@ namespace Programs_Starter.ViewModels.Wrappers
     public class ProgramsToStartDataGridWrapper : BaseDataGridWrapper<ProgramToStartWrapper>
     {
         public ICommand AddProgramToProgramsToStartList { get; private set; }
+        public ICommand RemoveProgramFromProgramsToStartList { get; private set; }
 
         public ProgramsToStartDataGridWrapper()
         {
@@ -22,6 +23,7 @@ namespace Programs_Starter.ViewModels.Wrappers
             HandlersManager.StartingProgramsHandler.ProgramsToStartLoadedSuccesfully += ProgramsToStartCollectionInitialized;
 
             AddProgramToProgramsToStartList = new RelayCommand(AddProgramToCollectionCommand);
+            RemoveProgramFromProgramsToStartList = new RelayCommand(RemoveProgramFromCollectionCommand);
         }
 
         private void ProgramsToStartCollectionInitialized()
@@ -39,6 +41,14 @@ namespace Programs_Starter.ViewModels.Wrappers
             foreach (var program in HandlersManager.StartingProgramsHandler.ProgramsToStart.OrderBy(x => x.Key))
             {
                 DataCollection.Add(new ProgramToStartWrapper(program.Value, program.Key));
+            }
+        }
+
+        private void RemoveProgramFromCollectionCommand()
+        {
+            if (SelectedItem != null)
+            {
+                HandlersManager.StartingProgramsHandler.TryRemoveProgramToStart(SelectedItem.Order);
             }
         }
 

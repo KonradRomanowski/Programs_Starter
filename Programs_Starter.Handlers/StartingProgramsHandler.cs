@@ -11,12 +11,15 @@ namespace Programs_Starter.Handlers
     {
         private const string NAME = "StartingProgramsHandler";
         
+        /// <summary>Dictionary with programs to start</summary>
         public Dictionary<int, ProgramToStart> ProgramsToStart { get; private set; }
 
         public delegate void ProgramsToStartCollectionChangedDelegate();
+        /// <summary>Delegate called when ProgramsToStart dictionary is somehow changed</summary>
         public ProgramsToStartCollectionChangedDelegate ProgramsToStartCollectionChanged;
 
         public delegate void ProgramsToStartLoadedSuccesfullyDelegate();
+        /// <summary>Delegate called when programs to start are succesfully loaded to ProgramsToStart dictionary</summary>
         public ProgramsToStartLoadedSuccesfullyDelegate ProgramsToStartLoadedSuccesfully;
 
         public StartingProgramsHandler() : base(NAME)
@@ -24,6 +27,10 @@ namespace Programs_Starter.Handlers
             ProgramsToStart = new Dictionary<int, ProgramToStart>();
         }
 
+        /// <summary>
+        /// Initializes ProgramsToStart dictionary with given programs
+        /// </summary>
+        /// <param name="programs">Dictionary with programs to initialize</param>
         public void InitializeProgramsToStartDictionary(Dictionary<int, ProgramToStart> programs)
         {
             ProgramsToStart = programs;
@@ -75,7 +82,7 @@ namespace Programs_Starter.Handlers
 
             try
             {
-                ProgramsToStart.Insert(program, index);
+                ProgramsToStart.InsertProgramToStart(program, index);
                 ProgramsToStartCollectionChanged?.Invoke();
                 return true;
             }
@@ -83,6 +90,41 @@ namespace Programs_Starter.Handlers
             {
                 Logger.DoErrorLogKV("Error while trying to insert new program to ProgramsToStart dictionary: ",
                     "Program", program.ToString(), "Error", ex.Message);
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Tries to remove ProgramToStart at the given index from the dictionary
+        /// Recalculates keys for all other programs
+        /// </summary>
+        /// <param name="index">Index from which program should be removed (order)</param>
+        /// <returns>True if program was succesfuly removed, false if there were errors</returns>
+        public bool TryRemoveProgramToStart(int index)
+        {
+            if (index <= 0)
+            {
+                Logger.DoErrorLogKV("TryRemoveProgramToStart called with index below or equal 0!", "Index", index.ToString());
+                return false;
+            }
+            if (index.IsGreaterThan(ProgramsToStart.Count))
+            {
+                Logger.DoErrorLogKV("TryRemoveProgramToStart called with index greater then ProgramsToStart.Count!", 
+                    "Index", index.ToString(), "ProgramsToStart.Count", ProgramsToStart.Count.ToString());
+                return false;
+            }
+
+            try
+            {
+                ProgramsToStart.RemoveProgramToStart(index);
+                ProgramsToStartCollectionChanged?.Invoke();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Logger.DoErrorLogKV("Error while trying to remove program from ProgramsToStart dictionary: ",
+                    "Index", index.ToString(), "Error", ex.Message);
             }
 
             return false;
