@@ -3,6 +3,7 @@ using Programs_Starter.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Xml;
 
@@ -204,7 +205,7 @@ namespace Programs_Starter.Handlers
                     }
 
                     //create a new one
-                    foreach (var item in newDictionary)
+                    foreach (var item in newDictionary.OrderBy(x => x.Key))
                     {
                         XmlElement childElement = doc.CreateElement("Program");
                         childElement.SetAttribute("order", item.Key.ToString());
