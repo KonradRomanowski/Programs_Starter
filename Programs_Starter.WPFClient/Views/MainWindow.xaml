@@ -78,7 +78,8 @@
 
             <DataGrid Name="ProgramsToStartDataGrid" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" 
                       ItemsSource="{Binding ProgramsToStart.DataCollection}" Height="200" Width="400" 
-                      AutoGenerateColumns="False" FrozenColumnCount="2" SelectedItem="{Binding ProgramsToStart.SelectedItem}">
+                      AutoGenerateColumns="False" FrozenColumnCount="2" SelectedItem="{Binding ProgramsToStart.SelectedItem}"
+                      CanUserSortColumns="False">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Order" Binding="{Binding Order, Mode=OneWay}" />
                     <DataGridTextColumn Header="Name" Binding="{Binding Name, Mode=OneWay}" />
