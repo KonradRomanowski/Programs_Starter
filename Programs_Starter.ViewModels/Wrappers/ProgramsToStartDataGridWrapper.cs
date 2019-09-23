@@ -59,7 +59,7 @@ namespace Programs_Starter.ViewModels.Wrappers
                 //if user clicked on program then insert new program before the selected item
                 if (SelectedItem != null)
                 {
-                    //ProgramsToStartList.Insert(SelectedProgramOnProgramsToStartListView.StartingOrder - 1, program);
+                    HandlersManager.StartingProgramsHandler.TryInsertProgramToStart(program, SelectedItem.Order);
                 }
                 else //if user clicked on some empty field then add new program at the end of the list
                 {

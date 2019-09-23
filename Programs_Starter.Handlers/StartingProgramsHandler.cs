@@ -30,6 +30,11 @@ namespace Programs_Starter.Handlers
             ProgramsToStartLoadedSuccesfully?.Invoke();
         }
 
+        /// <summary>
+        /// Tries to add ProgramToStart at the end of the dictionary
+        /// </summary>
+        /// <param name="program">Program to add</param>
+        /// <returns>True if program was succesfuly added, false if there were some errors</returns>
         public bool TryAddProgramToStart(ProgramToStart program)
         {
             int i = GetNewIndexForProgramToStart();
@@ -43,6 +48,40 @@ namespace Programs_Starter.Handlers
             catch (Exception ex)
             {
                 Logger.DoErrorLogKV("Error while trying to add new program to ProgramsToStart dictionary: ", 
+                    "Program", program.ToString(), "Error", ex.Message);
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Tries to insert ProgramToStart at the given index in the dictionary
+        /// </summary>
+        /// <param name="program">Program to add</param>
+        /// <param name="index">Index at which program should be added (order)</param>
+        /// <returns>True if program was succesfuly inserted, false if there were some errors</returns>
+        public bool TryInsertProgramToStart(ProgramToStart program, int index)
+        {
+            if (index <= 0)
+            {
+                Logger.DoErrorLogKV("TryInsertProgramToStart called with index below or equal 0!", "Index", index.ToString(),
+                    "Program", program.ToString());
+                return false;
+            }
+            if (index >= GetNewIndexForProgramToStart())
+            {
+                return TryAddProgramToStart(program);
+            }
+
+            try
+            {
+                ProgramsToStart.Insert(program, index);
+                ProgramsToStartCollectionChanged?.Invoke();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Logger.DoErrorLogKV("Error while trying to insert new program to ProgramsToStart dictionary: ",
                     "Program", program.ToString(), "Error", ex.Message);
             }
 
