@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using Programs_Starter.HandlersManaging;
 using Programs_Starter.Models;
+using Programs_Starter.Models.Helpers;
 using Programs_Starter.ViewModels.Base;
 using Programs_Starter.ViewModels.Helpers;
 using System;
@@ -35,7 +36,7 @@ namespace Programs_Starter.ViewModels.Wrappers
             }
         }
 
-        private void ProgramsToStartCollectionChanged()
+        private void ProgramsToStartCollectionChanged(OperationType operation, bool wasSuccessful, string programName)
         {
             DataCollection.Clear();
             foreach (var program in HandlersManager.StartingProgramsHandler.ProgramsToStart.OrderBy(x => x.Key))

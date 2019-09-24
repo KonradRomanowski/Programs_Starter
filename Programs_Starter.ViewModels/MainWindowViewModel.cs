@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using Programs_Starter.HandlersManaging;
 using Programs_Starter.Models;
+using Programs_Starter.Models.Helpers;
 using Programs_Starter.ViewModels.Base;
 using Programs_Starter.ViewModels.Controls;
 using Programs_Starter.ViewModels.Helpers;
@@ -54,6 +55,42 @@ namespace Programs_Starter.ViewModels
         {            
             HandlersManager.XMLConfigHandler.NoProgramsToStartFound += NoProgramsToStartFound;
             HandlersManager.XMLConfigHandler.ProgramsToStartSaved += ProgramsToStartSaved;
+            HandlersManager.StartingProgramsHandler.ProgramsToStartCollectionChanged += ProgramsToStartCollectionChanged;
+        }
+
+        private void ProgramsToStartCollectionChanged(OperationType operation, bool wasSuccesful, string programName)
+        {
+            if (operation.Value == OperationType.Added.Value)
+            {
+                if (wasSuccesful)
+                {
+                    MainMessage.Text = string.IsNullOrWhiteSpace(programName) ? "New program added!" :
+                        $"Program {programName} added!";
+                    MainMessage.ForegroundColor = ControlsColors.GREEN;
+                }
+                else
+                {
+                    MainMessage.Text = string.IsNullOrWhiteSpace(programName) ? "Error when adding new program!" :
+                        $"Error when adding program {programName}!";
+                    MainMessage.ForegroundColor = ControlsColors.RED;
+                }
+            }
+
+            if (operation.Value == OperationType.Removed.Value)
+            {
+                if (wasSuccesful)
+                {
+                    MainMessage.Text = string.IsNullOrWhiteSpace(programName) ? "Program removed!" :
+                        $"Program {programName} removed!";
+                    MainMessage.ForegroundColor = ControlsColors.GREEN;
+                }
+                else
+                {
+                    MainMessage.Text = string.IsNullOrWhiteSpace(programName) ? "Error when removing program!" :
+                        $"Error when removing program {programName}!";
+                    MainMessage.ForegroundColor = ControlsColors.RED;
+                }
+            }
         }
 
         private void ProgramsToStartSaved(bool wasSaveSuccesfull)
@@ -72,8 +109,8 @@ namespace Programs_Starter.ViewModels
 
         private void NoProgramsToStartFound()
         {
-            MainMessage.Text = "No programs added - add some programs first!";
-            MainMessage.ForegroundColor = ControlsColors.RED;
+            MainMessage.Text = "Welcome in Programs Starter - add some programs first!";
+            MainMessage.ForegroundColor = ControlsColors.BLACK;
         }
         
         private void CancelButtonCommand()

@@ -14,7 +14,7 @@ namespace Programs_Starter.Handlers
         /// <summary>Dictionary with programs to start</summary>
         public Dictionary<int, ProgramToStart> ProgramsToStart { get; private set; }
 
-        public delegate void ProgramsToStartCollectionChangedDelegate();
+        public delegate void ProgramsToStartCollectionChangedDelegate(OperationType operation, bool wasSuccesful, string programName);
         /// <summary>Delegate called when ProgramsToStart dictionary is somehow changed</summary>
         public ProgramsToStartCollectionChangedDelegate ProgramsToStartCollectionChanged;
 
@@ -44,16 +44,23 @@ namespace Programs_Starter.Handlers
         /// <returns>True if program was succesfuly added, false if there were some errors</returns>
         public bool TryAddProgramToStart(ProgramToStart program)
         {
+            if (program == null || string.IsNullOrWhiteSpace(program.Name) || string.IsNullOrWhiteSpace(program.Path))
+            {
+                Logger.DoErrorLog("TryAddProgramToStart called with null parameter!");
+                ProgramsToStartCollectionChanged?.Invoke(OperationType.Added, false, string.Empty);
+                return false;
+            }
             int i = GetNewIndexForProgramToStart();
 
             try
             {
                 ProgramsToStart.Add(i, program);
-                ProgramsToStartCollectionChanged?.Invoke();
+                ProgramsToStartCollectionChanged?.Invoke(OperationType.Added, true, program.Name);
                 return true;
             }
             catch (Exception ex)
             {
+                ProgramsToStartCollectionChanged?.Invoke(OperationType.Added, false, program.Name);
                 Logger.DoErrorLogKV("Error while trying to add new program to ProgramsToStart dictionary: ", 
                     "Program", program.ToString(), "Error", ex.Message);
             }
@@ -69,10 +76,17 @@ namespace Programs_Starter.Handlers
         /// <returns>True if program was succesfuly inserted, false if there were some errors</returns>
         public bool TryInsertProgramToStart(ProgramToStart program, int index)
         {
+            if (program == null || string.IsNullOrWhiteSpace(program.Name) || string.IsNullOrWhiteSpace(program.Path))
+            {
+                Logger.DoErrorLog("TryInsertProgramToStart called with null parameter!");
+                ProgramsToStartCollectionChanged?.Invoke(OperationType.Added, false, string.Empty);
+                return false;
+            }
             if (index <= 0)
             {
                 Logger.DoErrorLogKV("TryInsertProgramToStart called with index below or equal 0!", "Index", index.ToString(),
                     "Program", program.ToString());
+                ProgramsToStartCollectionChanged?.Invoke(OperationType.Added, false, program.Name);
                 return false;
             }
             if (index >= GetNewIndexForProgramToStart())
@@ -83,11 +97,12 @@ namespace Programs_Starter.Handlers
             try
             {
                 ProgramsToStart.InsertProgramToStart(program, index);
-                ProgramsToStartCollectionChanged?.Invoke();
+                ProgramsToStartCollectionChanged?.Invoke(OperationType.Added, true, program.Name);
                 return true;
             }
             catch (Exception ex)
             {
+                ProgramsToStartCollectionChanged?.Invoke(OperationType.Added, false, program.Name);
                 Logger.DoErrorLogKV("Error while trying to insert new program to ProgramsToStart dictionary: ",
                     "Program", program.ToString(), "Error", ex.Message);
             }
@@ -106,25 +121,30 @@ namespace Programs_Starter.Handlers
             if (index <= 0)
             {
                 Logger.DoErrorLogKV("TryRemoveProgramToStart called with index below or equal 0!", "Index", index.ToString());
+                ProgramsToStartCollectionChanged?.Invoke(OperationType.Removed, false, string.Empty);
                 return false;
             }
             if (index.IsGreaterThan(ProgramsToStart.Count))
             {
                 Logger.DoErrorLogKV("TryRemoveProgramToStart called with index greater then ProgramsToStart.Count!", 
                     "Index", index.ToString(), "ProgramsToStart.Count", ProgramsToStart.Count.ToString());
+                ProgramsToStartCollectionChanged?.Invoke(OperationType.Removed, false, string.Empty);
                 return false;
             }
+
+            ProgramToStart program = ProgramsToStart[index];
 
             try
             {
                 ProgramsToStart.RemoveProgramToStart(index);
-                ProgramsToStartCollectionChanged?.Invoke();
+                ProgramsToStartCollectionChanged?.Invoke(OperationType.Removed, true, program.Name);
                 return true;
             }
             catch (Exception ex)
             {
                 Logger.DoErrorLogKV("Error while trying to remove program from ProgramsToStart dictionary: ",
                     "Index", index.ToString(), "Error", ex.Message);
+                ProgramsToStartCollectionChanged?.Invoke(OperationType.Removed, false, program.Name);
             }
 
             return false;
