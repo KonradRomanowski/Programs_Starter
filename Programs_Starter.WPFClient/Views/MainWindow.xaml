@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Programs_Starter.WPFClient.Views"
+        xmlns:dd="clr-namespace:GongSolutions.Wpf.DragDrop;assembly=GongSolutions.Wpf.DragDrop"
         xmlns:converters="clr-namespace:Programs_Starter.WPFClient.Converters"
         mc:Ignorable="d"
         Title="Programs Starter" Height="{Binding MainWindowSettings.Height, Mode=TwoWay}" Width="500"
@@ -79,7 +80,7 @@
             <DataGrid Name="ProgramsToStartDataGrid" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" 
                       ItemsSource="{Binding ProgramsToStart.DataCollection}" Height="200" Width="400" 
                       AutoGenerateColumns="False" FrozenColumnCount="2" SelectedItem="{Binding ProgramsToStart.SelectedItem}"
-                      CanUserSortColumns="False">
+                      CanUserSortColumns="False" dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True" dd:DragDrop.DropHandler="{Binding}">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Order" Binding="{Binding Order, Mode=OneWay}" />
                     <DataGridTextColumn Header="Name" Binding="{Binding Name, Mode=OneWay}" />

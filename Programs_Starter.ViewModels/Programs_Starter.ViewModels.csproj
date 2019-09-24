@@ -6,12 +6,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="gong-wpf-dragdrop" Version="2.0.6" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Programs_Starter.HandlersManager\Programs_Starter.HandlersManager.csproj" />
     <ProjectReference Include="..\Programs_Starter.Handlers\Programs_Starter.Handlers.csproj" />
     <ProjectReference Include="..\Programs_Starter.Models\Programs_Starter.Models.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="PresentationCore">
+      <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\PresentationCore.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationFramework">
       <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\PresentationFramework.dll</HintPath>
     </Reference>

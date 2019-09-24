@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using GongSolutions.Wpf.DragDrop;
+using Microsoft.Win32;
 using Programs_Starter.HandlersManaging;
 using Programs_Starter.Models;
 using Programs_Starter.Models.Helpers;
@@ -16,6 +17,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace Programs_Starter.ViewModels
@@ -23,7 +25,7 @@ namespace Programs_Starter.ViewModels
     /// <summary>
     /// ViewModel for MainWindow
     /// </summary>
-    public class MainWindowViewModel : BaseViewModel
+    public class MainWindowViewModel : BaseViewModel, IDropTarget
     {
         public const int MAIN_WINDOW_HEIGHT_SMALL = 160;
         public const int MAIN_WINDOW_HEIGHT_BIG = 400;        
@@ -206,6 +208,33 @@ namespace Programs_Starter.ViewModels
 
             ProgramsToStart = new ProgramsToStartDataGridWrapper();
             ProgramsToStart.IsVisible = false;            
+        }
+
+        public void DragOver(IDropInfo dropInfo)
+        {
+            ProgramToStartWrapper sourceItem = dropInfo.Data as ProgramToStartWrapper;   //dragged item
+            ProgramToStartWrapper targetItem = dropInfo.TargetItem as ProgramToStartWrapper;//item on with user drops the sourceitem
+
+            if (sourceItem != null && targetItem != null)
+            {
+                dropInfo.DropTargetAdorner = DropTargetAdorners.Highlight;
+                dropInfo.Effects = DragDropEffects.Copy;
+            }
+            else
+            {
+                dropInfo.DropTargetAdorner = DropTargetAdorners.Highlight;
+                dropInfo.Effects = DragDropEffects.None;
+            }                      
+        }
+
+        public void Drop(IDropInfo dropInfo)
+        {
+            ProgramToStartWrapper sourceItem = dropInfo.Data as ProgramToStartWrapper;   //dragged item
+            ProgramToStartWrapper targetItem = dropInfo.TargetItem as ProgramToStartWrapper;//item on with user drops the sourceitem
+            RelativeInsertPosition positionOfItem = dropInfo.InsertPosition;   //position (before or after targetItem)
+            int insertIndex = dropInfo.InsertIndex;   //positon in ProgramsToStart where item was dropped
+
+            //TODO - move item on the list
         }
     }
 }
