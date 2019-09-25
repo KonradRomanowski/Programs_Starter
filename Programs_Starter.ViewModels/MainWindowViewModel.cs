@@ -25,7 +25,7 @@ namespace Programs_Starter.ViewModels
     /// <summary>
     /// ViewModel for MainWindow
     /// </summary>
-    public class MainWindowViewModel : BaseViewModel, IDropTarget
+    public class MainWindowViewModel : BaseViewModel
     {
         public const int MAIN_WINDOW_HEIGHT_SMALL = 160;
         public const int MAIN_WINDOW_HEIGHT_BIG = 400;        
@@ -209,32 +209,6 @@ namespace Programs_Starter.ViewModels
             ProgramsToStart = new ProgramsToStartDataGridWrapper();
             ProgramsToStart.IsVisible = false;            
         }
-
-        public void DragOver(IDropInfo dropInfo)
-        {
-            ProgramToStartWrapper sourceItem = dropInfo.Data as ProgramToStartWrapper;   //dragged item
-            ProgramToStartWrapper targetItem = dropInfo.TargetItem as ProgramToStartWrapper;//item on with user drops the sourceitem
-
-            if (sourceItem != null && targetItem != null)
-            {
-                dropInfo.DropTargetAdorner = DropTargetAdorners.Highlight;
-                dropInfo.Effects = DragDropEffects.Copy;
-            }
-            else
-            {
-                dropInfo.DropTargetAdorner = DropTargetAdorners.Highlight;
-                dropInfo.Effects = DragDropEffects.None;
-            }                      
-        }
-
-        public void Drop(IDropInfo dropInfo)
-        {
-            ProgramToStartWrapper sourceItem = dropInfo.Data as ProgramToStartWrapper;   //dragged item
-            ProgramToStartWrapper targetItem = dropInfo.TargetItem as ProgramToStartWrapper;//item on with user drops the sourceitem
-            RelativeInsertPosition positionOfItem = dropInfo.InsertPosition;   //position (before or after targetItem)
-            int insertIndex = dropInfo.InsertIndex;   //positon in ProgramsToStart where item was dropped
-
-            //TODO - move item on the list
-        }
+                
     }
 }

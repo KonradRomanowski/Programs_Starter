@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using GongSolutions.Wpf.DragDrop;
+using Microsoft.Win32;
 using Programs_Starter.HandlersManaging;
 using Programs_Starter.Models;
 using Programs_Starter.Models.Helpers;
@@ -9,11 +10,12 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Windows;
 using System.Windows.Input;
 
 namespace Programs_Starter.ViewModels.Wrappers
 {
-    public class ProgramsToStartDataGridWrapper : BaseDataGridWrapper<ProgramToStartWrapper>
+    public class ProgramsToStartDataGridWrapper : BaseDataGridWrapper<ProgramToStartWrapper>, IDropTarget
     {
         public ICommand AddProgramToProgramsToStartList { get; private set; }
         public ICommand RemoveProgramFromProgramsToStartList { get; private set; }
@@ -25,6 +27,33 @@ namespace Programs_Starter.ViewModels.Wrappers
 
             AddProgramToProgramsToStartList = new RelayCommand(AddProgramToCollectionCommand);
             RemoveProgramFromProgramsToStartList = new RelayCommand(RemoveProgramFromCollectionCommand);
+        }
+
+        public void DragOver(IDropInfo dropInfo)
+        {
+            ProgramToStartWrapper sourceItem = dropInfo.Data as ProgramToStartWrapper;   //dragged item
+            ProgramToStartWrapper targetItem = dropInfo.TargetItem as ProgramToStartWrapper;//item on with user drops the sourceitem
+
+            if (sourceItem != null && targetItem != null)
+            {
+                dropInfo.DropTargetAdorner = DropTargetAdorners.Highlight;
+                dropInfo.Effects = DragDropEffects.Copy;
+            }
+            else
+            {
+                dropInfo.DropTargetAdorner = DropTargetAdorners.Highlight;
+                dropInfo.Effects = DragDropEffects.None;
+            }
+        }
+
+        public void Drop(IDropInfo dropInfo)
+        {
+            ProgramToStartWrapper sourceItem = dropInfo.Data as ProgramToStartWrapper;   //dragged item
+            ProgramToStartWrapper targetItem = dropInfo.TargetItem as ProgramToStartWrapper;//item on with user drops the sourceitem
+            RelativeInsertPosition positionOfItem = dropInfo.InsertPosition;   //position (before or after targetItem)
+            int insertIndex = dropInfo.InsertIndex;   //positon in ProgramsToStart where item was dropped
+
+            //TODO - move item on the list
         }
 
         private void ProgramsToStartCollectionInitialized()
