@@ -73,5 +73,23 @@ namespace Programs_Starter.Models.Helpers
 
             tempList.Clear();
         }
+
+        public static void ChangeProgramToStartIndex(this Dictionary<int, ProgramToStart> dict, int oldIndex, int newIndex)
+        {
+            if (dict == null)
+                throw new ArgumentNullException();
+            if (oldIndex <= 0)
+                throw new ArgumentException("oldIndex below or equal 0!");
+            if (oldIndex > dict.Count)
+                throw new ArgumentOutOfRangeException("oldIndex is bigger then number of objects in dictionary!");
+            if (newIndex <= 0)
+                throw new ArgumentException("newIndex below or equal 0!");
+            if (newIndex > dict.Count)
+                throw new ArgumentOutOfRangeException("newIndex is bigger then number of objects in dictionary!");
+
+            ProgramToStart movedProgram = dict[oldIndex];
+            dict.RemoveProgramToStart(oldIndex);
+            dict.InsertProgramToStart(movedProgram, newIndex);
+        }
     }
 }

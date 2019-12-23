@@ -12,5 +12,6 @@ namespace Programs_Starter.Models.Helpers
 
         public static OperationType Added { get { return new OperationType("Added"); } }
         public static OperationType Removed { get { return new OperationType("Removed"); } }
+        public static OperationType Moved { get { return new OperationType("Moved"); } }
     }
 }
