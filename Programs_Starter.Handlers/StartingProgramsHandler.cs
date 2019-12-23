@@ -150,6 +150,13 @@ namespace Programs_Starter.Handlers
             return false;
         }
 
+        /// <summary>
+        /// Tries to move ProgramToStart at the given index in the dictionary
+        /// Recalculates keys for all other programs
+        /// </summary>
+        /// <param name="oldIndex">Index from which program should be moved (order)</param>
+        /// <param name="newIndex">Index to which program should be moved (order)</param>
+        /// <returns>True if program was succesfuly moved, false if there were errors</returns>
         public bool TryChangeProgramToStartIndex(int oldIndex, int newIndex)
         {
             if (newIndex <= 0)
