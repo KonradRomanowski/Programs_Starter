@@ -53,7 +53,15 @@ namespace Programs_Starter.ViewModels.Wrappers
             RelativeInsertPosition positionOfItem = dropInfo.InsertPosition;   //position (before or after targetItem)
             int insertIndex = dropInfo.InsertIndex;   //positon in ProgramsToStart where item was dropped
 
-            //TODO - move item on the list
+            if (positionOfItem == RelativeInsertPosition.BeforeTargetItem || targetItem.Order >= HandlersManager.StartingProgramsHandler.ProgramsToStart.Count)
+            {
+                HandlersManager.StartingProgramsHandler.TryChangeProgramToStartIndex(sourceItem.Order, targetItem.Order);
+            }
+            else
+            {
+                HandlersManager.StartingProgramsHandler.TryChangeProgramToStartIndex(sourceItem.Order, targetItem.Order + 1);
+            }
+            
         }
 
         private void ProgramsToStartCollectionInitialized()

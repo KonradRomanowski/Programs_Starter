@@ -93,6 +93,22 @@ namespace Programs_Starter.ViewModels
                     MainMessage.ForegroundColor = ControlsColors.RED;
                 }
             }
+
+            if (operation.Value == OperationType.Moved.Value)
+            {
+                if (wasSuccesful)
+                {
+                    MainMessage.Text = string.IsNullOrWhiteSpace(programName) ? "Program moved!" :
+                        $"Program {programName} moved!";
+                    MainMessage.ForegroundColor = ControlsColors.GREEN;
+                }
+                else
+                {
+                    MainMessage.Text = string.IsNullOrWhiteSpace(programName) ? "Error when moving program!" :
+                        $"Error when moving program {programName}!";
+                    MainMessage.ForegroundColor = ControlsColors.RED;
+                }
+            }
         }
 
         private void ProgramsToStartSaved(bool wasSaveSuccesfull)
