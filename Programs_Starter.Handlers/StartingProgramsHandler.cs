@@ -150,6 +150,41 @@ namespace Programs_Starter.Handlers
             return false;
         }
 
+        public bool TryChangeProgramToStartIndex(int oldIndex, int newIndex)
+        {
+            if (newIndex <= 0)
+            {
+                Logger.DoErrorLogKV("TryChangeProgramToStartIndex called with newIndex below or equal 0!", "newIndex", newIndex.ToString(),
+                    "Program", string.Empty);
+                ProgramsToStartCollectionChanged?.Invoke(OperationType.Moved, false, string.Empty);
+                return false;
+            }
+            if (oldIndex <= 0)
+            {
+                Logger.DoErrorLogKV("TryChangeProgramToStartIndex called with oldIndex below or equal 0!", "oldIndex", oldIndex.ToString(),
+                    "Program", string.Empty);
+                ProgramsToStartCollectionChanged?.Invoke(OperationType.Moved, false, string.Empty);
+                return false;
+            }
+
+            ProgramToStart program = ProgramsToStart[oldIndex];
+
+            try
+            {
+                ProgramsToStart.ChangeProgramToStartIndex(oldIndex, newIndex);
+                ProgramsToStartCollectionChanged?.Invoke(OperationType.Moved, true, program.Name);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                ProgramsToStartCollectionChanged?.Invoke(OperationType.Moved, false, program.Name);
+                Logger.DoErrorLogKV("Error while trying to change items index in ProgramsToStart dictionary: ",
+                    "Program", program.ToString(), "Error", ex.Message);
+            }
+
+            return false;
+        }
+
         private int GetNewIndexForProgramToStart()
         {
             return ProgramsToStart.Count + 1;
