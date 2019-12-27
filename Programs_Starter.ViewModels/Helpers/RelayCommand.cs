@@ -55,11 +55,7 @@ namespace Programs_Starter.ViewModels.Helpers
 
         public void RaiseCanExecuteChanged()
         {
-            var handler = CanExecuteChanged;
-            if (handler != null)
-            {
-                handler(this, new EventArgs());
-            }
+            CanExecuteChanged?.Invoke(this, new EventArgs());
         }
 
         private readonly Action RaiseCanExecuteChangedAction;
