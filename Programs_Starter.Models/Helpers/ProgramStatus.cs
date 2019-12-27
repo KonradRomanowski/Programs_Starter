@@ -15,5 +15,6 @@ namespace Programs_Starter.Models.Helpers
         public static ProgramStatus Running { get { return new ProgramStatus("Running"); } }
         public static ProgramStatus Error { get { return new ProgramStatus("Error"); } }
         public static ProgramStatus Unknown { get { return new ProgramStatus("Unknown"); } }
+        public static ProgramStatus Pending { get { return new ProgramStatus("Pending"); } }
     }
 }
