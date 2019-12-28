@@ -3,7 +3,10 @@ using Programs_Starter.Models;
 using Programs_Starter.Models.Helpers;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Programs_Starter.Handlers
 {
@@ -190,6 +193,119 @@ namespace Programs_Starter.Handlers
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// StartingProgramsHandler will begin to start all programs
+        /// </summary>
+        /// <param name="gapBetween">Time gap in seconds between two programs to start</param>
+        public async void StartPrograms(int gapBetween)
+        {
+            // check if programs dict is empty
+            if (ProgramsToStart.Count == 0)
+            {
+                Logger.DoErrorLog("StartPrograms method called for empty ProgramsToStart dictionary!");
+                return;
+            }
+            // check if gapBerween is below zero
+            if (gapBetween < 0)
+            {
+                Logger.DoErrorLog("StartPrograms method called with gapBetween parameter below 0!");
+                return;
+            }
+
+            try
+            {
+                // Set all programs status to pending
+                foreach (var program in ProgramsToStart)
+                {
+                    program.Value.SetProgramStatus(ProgramStatus.Pending);
+                }
+
+                // Start all programs and await gapBetween
+                foreach (var program in ProgramsToStart.OrderBy(x => x.Key))
+                {
+                    StartProgram(program.Value);
+                    await Task.Delay(gapBetween * 1000);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.DoErrorLogKV("Error in StartPrograms method", "Error", ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// This method is starting given program
+        /// </summary>
+        /// <param name="program">Program which needs to be started</param>
+        private void StartProgram(ProgramToStart program)
+        {
+            // Check if given program is valid
+            if (program == null || string.IsNullOrWhiteSpace(program.Name) || string.IsNullOrWhiteSpace(program.Path))
+            {
+                Logger.DoErrorLog("StartProgram called with null parameter!");
+                ProgramsToStartCollectionChanged?.Invoke(OperationType.Started, false, string.Empty);
+                return;
+            }
+            // Check if file exist
+            if (!File.Exists(program.Path))
+            {
+                Logger.DoErrorLogKV("Program does not exist at given path", "Program", program.ToString(), "Path", program.Path);
+                program.SetProgramStatus(ProgramStatus.Error);
+                ProgramsToStartCollectionChanged?.Invoke(OperationType.Started, false, program.Name);
+                return;
+            }
+            
+            try
+            {
+                ProcessStartInfo processInfo = new ProcessStartInfo();
+
+                //Check if file is an Excel sheet and Excel is installed then use default process
+                if (FileIsExcelSheet(program.Path) && ExcelIsInstalled())
+                {
+                    processInfo.FileName = "Excel";
+                    processInfo.Arguments = program.Path;
+
+                    Process process = Process.Start(processInfo);
+                }
+                else
+                {
+                    //Start the program from it's path
+                    Process process = Process.Start(program.Path);
+                }
+
+                program.SetProgramStatus(ProgramStatus.Starting);
+                ProgramsToStartCollectionChanged?.Invoke(OperationType.Started, true, program.Name);
+            }
+            catch (Exception ex)
+            {
+                Logger.DoErrorLogKV("Error while starting program!", "Program", program.ToString(), "Error", ex.Message);
+                program.SetProgramStatus(ProgramStatus.Error);
+                ProgramsToStartCollectionChanged?.Invoke(OperationType.Started, false, program.Name);
+            }
+        }
+
+        /// <summary>
+        /// This method is checking if file is an Excel sheet
+        /// </summary>
+        /// <returns></returns>
+        private bool FileIsExcelSheet(string _path)
+        {
+            string extenstion = Path.GetExtension(_path);
+
+            return (extenstion == ".xls" || extenstion == ".xlsx" || extenstion == ".xlsm") ? true : false;
+        }
+
+        /// <summary>
+        /// This method is checking if Excel software is installed on machine
+        /// </summary>
+        /// <returns></returns>
+        private bool ExcelIsInstalled()
+        {
+            Type officeType = Type.GetTypeFromProgID("Excel.Application");
+
+            return (officeType == null) ? false : true;
         }
 
         private int GetNewIndexForProgramToStart()

@@ -42,8 +42,7 @@ namespace Programs_Starter.ViewModels
         public ButtonControl OptionsButton { get; set; }
         public ButtonControl ShowProgramsListButton { get; set; }
         public ProgressBarControl StatusProgressBar { get; set; }
-
-
+        
         public MainWindowViewModel()
         {
             InitializeControls();
@@ -109,6 +108,22 @@ namespace Programs_Starter.ViewModels
                     MainMessage.ForegroundColor = ControlsColors.RED;
                 }
             }
+            
+            if (operation.Value == OperationType.Started.Value)
+            {
+                if (wasSuccesful)
+                {
+                    MainMessage.Text = string.IsNullOrWhiteSpace(programName) ? "Program started!" :
+                        $"Program {programName} started!";
+                    MainMessage.ForegroundColor = ControlsColors.GREEN;
+                }
+                else
+                {
+                    MainMessage.Text = string.IsNullOrWhiteSpace(programName) ? "Error when starting program!" :
+                        $"Error when starting program {programName}!";
+                    MainMessage.ForegroundColor = ControlsColors.RED;
+                }
+            }
         }
 
         private void ProgramsToStartSaved(bool wasSaveSuccesfull)
@@ -162,7 +177,7 @@ namespace Programs_Starter.ViewModels
 
         private void StartNowButtonCommand()
         {
-            throw new NotImplementedException();
+            HandlersManager.StartingProgramsHandler.StartPrograms(6);
         }        
 
         private void InitializeControls()

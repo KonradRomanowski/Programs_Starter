@@ -5,12 +5,10 @@ using Programs_Starter.Models;
 using Programs_Starter.Models.Helpers;
 using Programs_Starter.ViewModels.Base;
 using Programs_Starter.ViewModels.Helpers;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Input;
 
 namespace Programs_Starter.ViewModels.Wrappers
@@ -19,6 +17,8 @@ namespace Programs_Starter.ViewModels.Wrappers
     {
         public ICommand AddProgramToProgramsToStartList { get; private set; }
         public ICommand RemoveProgramFromProgramsToStartList { get; private set; }
+
+        private readonly object collectionLock = new object();
 
         public ProgramsToStartDataGridWrapper()
         {
@@ -67,6 +67,9 @@ namespace Programs_Starter.ViewModels.Wrappers
         private void ProgramsToStartCollectionInitialized()
         {
             DataCollection = new ObservableCollection<ProgramToStartWrapper>();
+            // Enable collection synchronization, so it can be called from multiple threads
+            BindingOperations.EnableCollectionSynchronization(DataCollection, collectionLock);
+
             foreach (var program in HandlersManager.StartingProgramsHandler.ProgramsToStart.OrderBy(x => x.Key))
             {
                 DataCollection.Add(new ProgramToStartWrapper(program.Value, program.Key));
@@ -75,10 +78,13 @@ namespace Programs_Starter.ViewModels.Wrappers
 
         private void ProgramsToStartCollectionChanged(OperationType operation, bool wasSuccessful, string programName)
         {
-            DataCollection.Clear();
-            foreach (var program in HandlersManager.StartingProgramsHandler.ProgramsToStart.OrderBy(x => x.Key))
+            if (OperationType.Started != operation)
             {
-                DataCollection.Add(new ProgramToStartWrapper(program.Value, program.Key));
+                DataCollection.Clear();
+                foreach (var program in HandlersManager.StartingProgramsHandler.ProgramsToStart.OrderBy(x => x.Key))
+                {
+                    DataCollection.Add(new ProgramToStartWrapper(program.Value, program.Key));
+                }
             }
         }
 
