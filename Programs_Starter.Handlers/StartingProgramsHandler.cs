@@ -236,7 +236,11 @@ namespace Programs_Starter.Handlers
                 }
 
                 // Finish starting procedure
-                FinishedStartingProcedure?.Invoke(true);
+                if (ProgramsToStart.Count(x => x.Value.ProgramStatus.Value == ProgramStatus.Starting.Value)
+                    == ProgramsToStart.Count)
+                    FinishedStartingProcedure?.Invoke(true);
+                else
+                    FinishedStartingProcedure?.Invoke(false);
             }
             catch (Exception ex)
             {
