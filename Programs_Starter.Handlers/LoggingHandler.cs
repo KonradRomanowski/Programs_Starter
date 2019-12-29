@@ -52,7 +52,7 @@ namespace Programs_Starter.Handlers
         public void DoWarningLogKV(string logContent, params string[] values)
         {
             StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.Append(logContent);
+            stringBuilder.Append(logContent + " ");
 
             for (int i = 0; i < values.Length; i++)
             {
@@ -86,7 +86,7 @@ namespace Programs_Starter.Handlers
         public void DoErrorLogKV(string logContent, params string[] values)
         {
             StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.Append(logContent);
+            stringBuilder.Append(logContent + " ");
 
             for (int i = 0; i < values.Length; i++)
             {
