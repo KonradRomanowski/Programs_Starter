@@ -1,5 +1,4 @@
 ﻿using GongSolutions.Wpf.DragDrop;
-using Microsoft.Win32;
 using Programs_Starter.Handlers;
 using Programs_Starter.HandlersManaging;
 using Programs_Starter.Models;
@@ -10,16 +9,7 @@ using Programs_Starter.ViewModels.Helpers;
 using Programs_Starter.ViewModels.Windows;
 using Programs_Starter.ViewModels.Wrappers;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Drawing;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Input;
 
 namespace Programs_Starter.ViewModels
 {
@@ -60,7 +50,7 @@ namespace Programs_Starter.ViewModels
             HandlersManager.StartingProgramsHandler.ProgramsToStartCollectionChanged += ProgramsToStartCollectionChanged;
             HandlersManager.StartingProgramsHandler.FinishedStartingProcedure += StartingProcedureIsFinished;
         }
-
+        
         private void StartingProcedureIsFinished(bool wasSuccessful)
         {
             if (wasSuccessful)
@@ -88,6 +78,7 @@ namespace Programs_Starter.ViewModels
                     MainMessage.Text = string.IsNullOrWhiteSpace(programName) ? "New program added!" :
                         $"Program {programName} added!";
                     MainMessage.ForegroundColor = ControlsColors.GREEN;
+                    CheckIfStartButtonsShouldBeVisible();
                 }
                 else
                 {
@@ -104,6 +95,7 @@ namespace Programs_Starter.ViewModels
                     MainMessage.Text = string.IsNullOrWhiteSpace(programName) ? "Program removed!" :
                         $"Program {programName} removed!";
                     MainMessage.ForegroundColor = ControlsColors.GREEN;
+                    CheckIfStartButtonsShouldBeVisible();
                 }
                 else
                 {
@@ -170,13 +162,8 @@ namespace Programs_Starter.ViewModels
         }
         
         private void CancelButtonCommand()
-        {            
-            MainMessage.Text = "Test przycisku Cancel udany!";
-            CancelButton.IsVisible = false;
-            MainMessage.ForegroundColor = ControlsColors.RED;
-
-            StatusProgressBar.Value = 75;
-            StatusProgressBar.Text = $"Progress: {StatusProgressBar.Value.ToString()}%";            
+        {
+            throw new NotImplementedException();           
         }
 
         private void ShowProgramsListButtonCommand()
@@ -203,6 +190,7 @@ namespace Programs_Starter.ViewModels
             // Prepare Controls
             StartNowButton.IsVisible = false;
             DontStartButton.IsVisible = false;
+            CancelButton.IsVisible = true;
             StatusProgressBar.Value = 0;
             StatusProgressBar.Text = "Starting...";
 
@@ -241,7 +229,7 @@ namespace Programs_Starter.ViewModels
             {
                 ForegroundColor = ControlsColors.BLACK,
                 Text = "Cancel",
-                IsVisible = true,
+                IsVisible = false,
                 Command = new RelayCommand(CancelButtonCommand)
             };
 
@@ -278,11 +266,24 @@ namespace Programs_Starter.ViewModels
 
             AboutText = new TextBlockControl();
             AboutText.IsVisible = true;
-            AboutText.Text = "v. 0.0.0.1  KR @ 2019";
+            AboutText.Text = "v. 0.0.1.0  KR @ 2019";
 
             ProgramsToStart = new ProgramsToStartDataGridWrapper();
             ProgramsToStart.IsVisible = false;            
         }
-                
+             
+        private void CheckIfStartButtonsShouldBeVisible()
+        {
+            if (HandlersManager.StartingProgramsHandler.ProgramsToStart.Count > 0)
+            {
+                StartNowButton.IsVisible = true;
+                DontStartButton.IsVisible = true;
+            }
+            else
+            {
+                StartNowButton.IsVisible = false;
+                DontStartButton.IsVisible = false;
+            }
+        }
     }
 }
