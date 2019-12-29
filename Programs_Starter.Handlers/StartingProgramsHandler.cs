@@ -25,6 +25,10 @@ namespace Programs_Starter.Handlers
         /// <summary>Delegate called when programs to start are succesfully loaded to ProgramsToStart dictionary</summary>
         public ProgramsToStartLoadedSuccesfullyDelegate ProgramsToStartLoadedSuccesfully;
 
+        public delegate void FinishedStartingProcedureDelegate(bool wasSuccessful);
+        /// <summary>Delegate called when starting procedure is done</summary>
+        public FinishedStartingProcedureDelegate FinishedStartingProcedure;
+
         public StartingProgramsHandler() : base(NAME)
         {
             ProgramsToStart = new Dictionary<int, ProgramToStart>();
@@ -205,12 +209,14 @@ namespace Programs_Starter.Handlers
             if (ProgramsToStart.Count == 0)
             {
                 Logger.DoErrorLog("StartPrograms method called for empty ProgramsToStart dictionary!");
+                FinishedStartingProcedure?.Invoke(false);
                 return;
             }
             // check if gapBerween is below zero
             if (gapBetween < 0)
             {
                 Logger.DoErrorLog("StartPrograms method called with gapBetween parameter below 0!");
+                FinishedStartingProcedure?.Invoke(false);
                 return;
             }
 
@@ -228,10 +234,20 @@ namespace Programs_Starter.Handlers
                     StartProgram(program.Value);
                     await Task.Delay(gapBetween * 1000);
                 }
+
+                // Finish starting procedure
+                FinishedStartingProcedure?.Invoke(true);
             }
             catch (Exception ex)
             {
                 Logger.DoErrorLogKV("Error in StartPrograms method", "Error", ex.Message);
+
+                foreach (var program in ProgramsToStart)
+                {
+                    if (program.Value.ProgramStatus.Value == ProgramStatus.Pending.Value)
+                        program.Value.SetProgramStatus(ProgramStatus.Error);
+                }
+                FinishedStartingProcedure?.Invoke(false);
             }
         }
 

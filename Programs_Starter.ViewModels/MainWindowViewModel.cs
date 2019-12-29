@@ -58,6 +58,25 @@ namespace Programs_Starter.ViewModels
             HandlersManager.XMLConfigHandler.NoProgramsToStartFound += NoProgramsToStartFound;
             HandlersManager.XMLConfigHandler.ProgramsToStartSaved += ProgramsToStartSaved;
             HandlersManager.StartingProgramsHandler.ProgramsToStartCollectionChanged += ProgramsToStartCollectionChanged;
+            HandlersManager.StartingProgramsHandler.FinishedStartingProcedure += StartingProcedureIsFinished;
+        }
+
+        private void StartingProcedureIsFinished(bool wasSuccessful)
+        {
+            if (wasSuccessful)
+            {
+                MainMessage.Text = "All programs successfully started!";
+                MainMessage.ForegroundColor = ControlsColors.GREEN;
+            }
+            else
+            {
+                MainMessage.Text = "Some errors occured when starting programs";
+                MainMessage.ForegroundColor = ControlsColors.RED;
+            }
+
+            StatusProgressBar.Value = HandlersManager.StartingProgramsHandler.GetPercentOfStartedPrograms();
+            StatusProgressBar.Text = $"Finished!";
+            CancelButton.IsVisible = false;
         }
 
         private void ProgramsToStartCollectionChanged(OperationType operation, bool wasSuccesful, string programName)
