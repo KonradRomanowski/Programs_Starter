@@ -1,5 +1,6 @@
 ﻿using GongSolutions.Wpf.DragDrop;
 using Microsoft.Win32;
+using Programs_Starter.Handlers;
 using Programs_Starter.HandlersManaging;
 using Programs_Starter.Models;
 using Programs_Starter.Models.Helpers;
@@ -123,6 +124,9 @@ namespace Programs_Starter.ViewModels
                         $"Error when starting program {programName}!";
                     MainMessage.ForegroundColor = ControlsColors.RED;
                 }
+
+                StatusProgressBar.Value = HandlersManager.StartingProgramsHandler.GetPercentOfStartedPrograms();
+                StatusProgressBar.Text = $"Progress: {StatusProgressBar.Value.ToString()}%";
             }
         }
 
@@ -177,8 +181,20 @@ namespace Programs_Starter.ViewModels
 
         private void StartNowButtonCommand()
         {
-            HandlersManager.StartingProgramsHandler.StartPrograms(6);
-        }        
+            // Prepare Controls
+            StartNowButton.IsVisible = false;
+            DontStartButton.IsVisible = false;
+            StatusProgressBar.Value = 0;
+            StatusProgressBar.Text = "Starting...";
+
+            // Start work
+            HandlersManager.StartingProgramsHandler.StartPrograms(OptionsHandler.GapBetweenStartingPrograms.Value);
+        }
+
+        private void DontStartButtonCommand()
+        {
+            throw new NotImplementedException();
+        }
 
         private void InitializeControls()
         {
@@ -224,6 +240,14 @@ namespace Programs_Starter.ViewModels
                 Text = "Start Now",
                 IsVisible = true,
                 Command = new RelayCommand(StartNowButtonCommand)
+            };
+
+            DontStartButton = new ButtonControl
+            {
+                ForegroundColor = ControlsColors.BLACK,
+                Text = "Don't start",
+                IsVisible = true,
+                Command = new RelayCommand(DontStartButtonCommand)
             };
 
             StatusProgressBar = new ProgressBarControl

@@ -287,6 +287,17 @@ namespace Programs_Starter.Handlers
         }
 
         /// <summary>
+        /// Returns integer value with percent number of started programs from ProgramsToStart dict
+        /// </summary>
+        /// <returns></returns>
+        public int GetPercentOfStartedPrograms()
+        {
+            return (int)((
+                (float) ProgramsToStart.Count(x => x.Value.ProgramStatus.Value != ProgramStatus.Pending.Value) / ProgramsToStart.Count()
+                ) * 100);
+        }
+
+        /// <summary>
         /// This method is checking if file is an Excel sheet
         /// </summary>
         /// <returns></returns>
