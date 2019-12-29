@@ -232,12 +232,16 @@ namespace Programs_Starter.Handlers
                 foreach (var program in ProgramsToStart.OrderBy(x => x.Key))
                 {
                     StartProgram(program.Value);
-                    await Task.Delay(gapBetween * 1000);
+
+                    // If no more pending programs then await gapBetween, else await 1 sec.
+                    if (ProgramsToStart.Count(x => x.Value.ProgramStatus.Value == ProgramStatus.Pending.Value) != 0)
+                        await Task.Delay(gapBetween * 1000);
+                    else
+                        await Task.Delay(1000);
                 }
 
                 // Finish starting procedure
-                if (ProgramsToStart.Count(x => x.Value.ProgramStatus.Value == ProgramStatus.Starting.Value)
-                    == ProgramsToStart.Count)
+                if (AllProgramsStarting())
                     FinishedStartingProcedure?.Invoke(true);
                 else
                     FinishedStartingProcedure?.Invoke(false);
@@ -337,6 +341,12 @@ namespace Programs_Starter.Handlers
             Type officeType = Type.GetTypeFromProgID("Excel.Application");
 
             return (officeType == null) ? false : true;
+        }
+
+        private bool AllProgramsStarting()
+        {
+            return ProgramsToStart.Count(x => x.Value.ProgramStatus.Value == ProgramStatus.Starting.Value)
+                    == ProgramsToStart.Count;
         }
 
         private int GetNewIndexForProgramToStart()
